@@ -1,0 +1,16 @@
+application-name: "AccSin"
+
+server:
+    port: 9100
+
+logging:
+    file:
+        name: /home/javaApp/logApp/AccSin.log
+        max-history: 10
+    level:
+        com.netflix.discovery: 'OFF'
+        ROOT: INFO
+        c.i.inretail.task: INFO
+        org.springframework.cloud: 'DEBUG'
+        com.atsistemas: 'DEBUG'
+

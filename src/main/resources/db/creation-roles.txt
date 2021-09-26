@@ -1,0 +1,12 @@
+INSERT INTO `accsin-dev`.`role`
+(id, name, role_id)
+VALUES(1, 'ROLE_ADMINISTRATOR', '6fe95841-8097-41fd-9707-94c87f38b536');
+INSERT INTO `accsin-dev`.`role`
+(id, name, role_id)
+VALUES(2, 'ROLE_ADMINISTRATIVE', 'eacb43f6-0ea8-4e1f-84c1-bf71aff6bb61');
+INSERT INTO `accsin-dev`.`role`
+(id, name, role_id)
+VALUES(3, 'ROLE_CLIENT', '4b2c8434-ae8e-4f18-8583-ac839d488d2d');
+INSERT INTO `accsin-dev`.`role`
+(id, name, role_id)
+VALUES(4, 'ROLE_PROFESSIONAL', '0d8b9df6-2650-4ab4-8058-0f7ec5b8fdbc');
