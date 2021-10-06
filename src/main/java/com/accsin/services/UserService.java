@@ -12,7 +12,6 @@ import com.accsin.repositories.UserRepository;
 import com.accsin.services.interfaces.UserServiceInterface;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.User;
@@ -42,18 +41,20 @@ public class UserService implements UserServiceInterface {
             throw new RuntimeException("El Correo ya existe");
 
         UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(user, userEntity);
+        //BeanUtils.copyProperties(user, userEntity);
+        mapper.map(user, userEntity);
 
         userEntity.setEncryptedPassword(bcrypt.encode(user.getPassword()));
         UUID userId = UUID.randomUUID();
         userEntity.setUserId(userId.toString());
-        userEntity.setRole(roleRepository.findByName(user.getRole()));
+        userEntity.setRole(roleRepository.findByName(user.getRole().getName()));
         userEntity.setCreateAt(new Date());
         
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
         UserDto userToReturn = new UserDto();
-        BeanUtils.copyProperties(storedUserDetails, userToReturn);
+        mapper.map(storedUserDetails, userToReturn);
+        //BeanUtils.copyProperties(storedUserDetails, userToReturn);
 
         return userToReturn;
     }
@@ -78,8 +79,22 @@ public class UserService implements UserServiceInterface {
             throw new UsernameNotFoundException(email);
         }
         UserDto userToReturn = new UserDto();
-        BeanUtils.copyProperties(userEntity, userToReturn);
+        mapper.map(userEntity, userToReturn);
+        userToReturn.setPassword(null);
 
         return userToReturn;
+    }
+
+    @Override
+    public UserDto updateUser(UserDto user) {
+        UserEntity userEntity =  userRepository.findByEmail(user.getEmail());
+
+        if (userEntity == null) {
+            throw new UsernameNotFoundException(user.getEmail());
+        }
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+        userRepository.save(userEntity);
+        return user;
     }  
 }

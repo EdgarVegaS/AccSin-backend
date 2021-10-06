@@ -1,6 +1,7 @@
 package com.accsin.security;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,10 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.accsin.SpringAppContext;
 import com.accsin.models.request.UserLoginRequestModel;
+import com.accsin.models.responses.UserRest;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.interfaces.UserServiceInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,10 +31,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+
+    private ModelMapper mapper;
+
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager, ModelMapper mapper) {
         this.authenticationManager = authenticationManager;
+        this.mapper = mapper;
     }
 
     @Override
@@ -60,14 +67,23 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                         .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_DATE))
                         .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret()).compact();
 
-
         UserServiceInterface userService = (UserServiceInterface) SpringAppContext.getBean("userService");
         UserDto useDto = userService.getUser(username);
+        UserRest userResponse = mapper.map(useDto, UserRest.class);
+        userResponse.setToken(SecurityConstants.TOKEN_PREFIX + token);
 
+        ObjectMapper objMapper = new ObjectMapper();
+        String userJsonString = objMapper.writeValueAsString(userResponse);
+        PrintWriter out = response.getWriter();
 
+        response.addHeader("Access-Control-Expose-Headers", "Authorization");
         response.addHeader("UserId",useDto.getUserId());
         response.addHeader(SecurityConstants.HEADER_STRING,SecurityConstants.TOKEN_PREFIX + token);
 
+        try {
+            out.print(userJsonString);
+        }finally{
+            out.close();
+        }
     }
-
 }

@@ -11,5 +11,7 @@ public class UserRest {
     private String firstName;
     private String lastName;
     private String email;
+    private RoleRest role;
+    private String token;
 
 }
