@@ -3,6 +3,7 @@ package com.accsin.security;
 
 import com.accsin.services.interfaces.UserServiceInterface;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +25,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/users").permitAll()
+        http.csrf().disable().authorizeRequests()
+        .antMatchers("/v2/api-docs",
+                    "/configuration/ui",
+                    "/swagger-resources/**",
+                    "/configuration/security",
+                    "/swagger-ui.html",
+                    "/webjars/**").permitAll()
+        .antMatchers(HttpMethod.POST, "/users").permitAll()
+        .antMatchers(HttpMethod.POST, "/services").permitAll()
+        .antMatchers(HttpMethod.POST, "/checklists").permitAll()
+        .antMatchers(HttpMethod.PUT).permitAll()
         .anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
         .addFilter(new AuthorizationFilter(authenticationManager()))
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -37,7 +48,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     public AuthenticationFilter getAuthenticationFilter() throws Exception{
-        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), new ModelMapper());
 
         filter.setFilterProcessesUrl("/users/login");
         return filter;

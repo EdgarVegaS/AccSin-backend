@@ -1,0 +1,39 @@
+package com.accsin.utils;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public final class DateTimeUtils {
+
+    public static Date getDateNextMonth(String number){
+        int n = Integer.parseInt(number);
+        if (n > getLastDayOfNextMonth()) {
+            n = getLastDayOfNextMonth();
+        }
+        String monthYearNextMonth = getStringNextMonth();
+        String dateString = String.format("%s/%s",number,monthYearNextMonth);
+        try {
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dateString);    
+            return date;
+        } catch (Exception e) {
+            return null;      
+        }
+    }
+
+    public static int getLastDayOfNextMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
+    public static String getStringNextMonth(){
+        DateFormat dt = new SimpleDateFormat("MM/yyyy");
+        Calendar calendar  = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        Date date = calendar.getTime();
+        return dt.format(date);
+    }
+    
+}

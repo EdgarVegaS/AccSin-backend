@@ -2,6 +2,7 @@ package com.accsin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -45,5 +48,14 @@ public class UserEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
+
+    @OneToOne(mappedBy = "user")
+    private CheckListEntity checkList;
+
+    @OneToOne(mappedBy = "user")
+    private ServiceEntity service;
+
+    @OneToMany(mappedBy = "user")
+    private List<ActionEntity> actions;
 
 }
