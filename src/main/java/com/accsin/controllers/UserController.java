@@ -1,7 +1,7 @@
 package com.accsin.controllers;
 
 import com.accsin.models.request.UserDetailRequestModel;
-import com.accsin.models.responses.UserRest;
+import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.interfaces.UserServiceInterface;
@@ -28,29 +28,29 @@ public class UserController {
     ModelMapper mapper;
 
     @GetMapping
-    public UserRest getUser() {
+    public UserLoginResponse getUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getPrincipal().toString();
         UserDto userDto = userService.getUser(email);
-        UserRest userRest = new ModelMapper().map(userDto, UserRest.class);
+        UserLoginResponse userRest = new ModelMapper().map(userDto, UserLoginResponse.class);
         return userRest;
     }
 
     @PostMapping
-    public UserRest createUser(@RequestBody UserDetailRequestModel userDetails) {
+    public UserLoginResponse createUser(@RequestBody UserDetailRequestModel userDetails) {
 
         UserDto userDto = mapper.map(userDetails, UserDto.class);
         RoleDto roleDto = new RoleDto();
         roleDto.setName(userDetails.getRole());
         userDto.setRole(roleDto);
         UserDto createdUser = userService.createUser(userDto);
-        UserRest userToReturn = mapper.map(createdUser, UserRest.class);
+        UserLoginResponse userToReturn = mapper.map(createdUser, UserLoginResponse.class);
         return userToReturn;
     }
 
     @PutMapping
-    public UserRest updateUser(@RequestBody UserDetailRequestModel userDetails){
+    public UserLoginResponse updateUser(@RequestBody UserDetailRequestModel userDetails){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
@@ -58,7 +58,7 @@ public class UserController {
         }
         UserDto userDto = mapper.map(userDetails,UserDto.class);
         userDto = userService.updateUser(userDto);
-        UserRest response = mapper.map(userDto, UserRest.class);
+        UserLoginResponse response = mapper.map(userDto, UserLoginResponse.class);
         return response;
     }
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,12 +49,10 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "check_list_id")
+    @OneToOne(mappedBy = "user")
     private CheckListEntity checkList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "service_id")
+    @OneToOne(mappedBy = "user")
     private ServiceEntity service;
 
     @OneToMany(mappedBy = "user")

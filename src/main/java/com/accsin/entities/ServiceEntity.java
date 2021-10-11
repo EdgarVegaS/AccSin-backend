@@ -1,12 +1,18 @@
 package com.accsin.entities;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,10 +32,13 @@ public class ServiceEntity {
     @Column(nullable = false)
     private boolean enable;
 
-    @OneToOne(mappedBy = "service")
-    private UserEntity user;
+    @CreatedDate
+    private Date createAt;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "monthly_payment_id")
-    private MonthlyPaymentEntity monthlyPayment;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    @OneToMany(mappedBy = "service")
+    private List<MonthlyPaymentEntity> monthlyPayment;
 }

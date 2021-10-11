@@ -1,7 +1,10 @@
 package com.accsin.configurations;
 
 import com.accsin.SpringAppContext;
+import com.accsin.models.responses.MonthlyPaymentResponse;
+import com.accsin.models.shared.dto.MonthlyPaymentDto;
 import com.accsin.security.AppProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -35,13 +38,19 @@ public class AppConfiguration implements WebMvcConfigurer {
 		ModelMapper mapper = new ModelMapper();
 
 		//mapper.typeMap(UserDto.class, UserRest.class).addMappings( m -> m.skip(UserRest::setPost));
+		mapper.typeMap(MonthlyPaymentDto.class, MonthlyPaymentResponse.class).addMappings(m -> m.skip(MonthlyPaymentResponse::setService));
 
 		return mapper;
 	}
 
 	@Bean(name = "restConnection")
-	public RestTemplate restSapConnection(RestTemplateBuilder restTemplateBuilder){
+	public RestTemplate restConnection(RestTemplateBuilder restTemplateBuilder){
 		return restTemplateBuilder.build();
+	}
+
+	@Bean(name = "ObjectMapper")
+	public ObjectMapper getObjectMapper(){
+		return new ObjectMapper();
 	}
 
 	@Override

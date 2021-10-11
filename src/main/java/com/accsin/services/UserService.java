@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.accsin.entities.UserEntity;
+import com.accsin.exeptions.ExistEmailExeption;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.repositories.RoleRepository;
 import com.accsin.repositories.UserRepository;
@@ -37,8 +38,10 @@ public class UserService implements UserServiceInterface {
     @Override
     public UserDto createUser(UserDto user) {
 
-        if (userRepository.findByEmail(user.getEmail()) != null)
-            throw new RuntimeException("El Correo ya existe");
+        if (userRepository.findByEmail(user.getEmail()) != null){
+            throw new ExistEmailExeption("El Correo ya existe");
+        }
+            
 
         UserEntity userEntity = new UserEntity();
         //BeanUtils.copyProperties(user, userEntity);

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.accsin.SpringAppContext;
 import com.accsin.models.request.UserLoginRequestModel;
-import com.accsin.models.responses.UserRest;
+import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.interfaces.UserServiceInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,7 +69,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         UserServiceInterface userService = (UserServiceInterface) SpringAppContext.getBean("userService");
         UserDto useDto = userService.getUser(username);
-        UserRest userResponse = mapper.map(useDto, UserRest.class);
+        UserLoginResponse userResponse = mapper.map(useDto, UserLoginResponse.class);
         userResponse.setToken(SecurityConstants.TOKEN_PREFIX + token);
 
         ObjectMapper objMapper = new ObjectMapper();
@@ -80,7 +80,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("UserId",useDto.getUserId());
         response.addHeader(SecurityConstants.HEADER_STRING,SecurityConstants.TOKEN_PREFIX + token);
 
-        try {
+        try{
             out.print(userJsonString);
         }finally{
             out.close();

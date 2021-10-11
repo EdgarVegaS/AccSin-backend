@@ -1,17 +1,18 @@
 package com.accsin.models.responses;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRest {
-    
+@EqualsAndHashCode
+public class UserResponse {
+
     private String userId;
     private String firstName;
     private String lastName;
     private String email;
-    private RoleRest role;
-    private String token;
-
+    private RoleResponse role;
+    private ServiceResponse service;
 }
