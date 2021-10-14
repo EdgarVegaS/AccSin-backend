@@ -39,6 +39,7 @@ public class AppConfiguration implements WebMvcConfigurer {
 
 		//mapper.typeMap(UserDto.class, UserRest.class).addMappings( m -> m.skip(UserRest::setPost));
 		mapper.typeMap(MonthlyPaymentDto.class, MonthlyPaymentResponse.class).addMappings(m -> m.skip(MonthlyPaymentResponse::setService));
+		//mapper.typeMap(ServiceDto.class,ServiceResponse.class).addMappings(s -> s.skip(ServiceResponse::setUser));
 
 		return mapper;
 	}

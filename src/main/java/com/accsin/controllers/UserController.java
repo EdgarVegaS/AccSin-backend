@@ -1,7 +1,12 @@
 package com.accsin.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.accsin.exeptions.UnauthorizedExeption;
 import com.accsin.models.request.UserDetailRequestModel;
 import com.accsin.models.responses.UserLoginResponse;
+import com.accsin.models.responses.UserResponse;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.interfaces.UserServiceInterface;
@@ -35,6 +40,22 @@ public class UserController {
         UserDto userDto = userService.getUser(email);
         UserLoginResponse userRest = new ModelMapper().map(userDto, UserLoginResponse.class);
         return userRest;
+    }
+
+    @GetMapping("/all")
+    public List<UserResponse> getAllUsers(){
+        List<UserResponse> response = new ArrayList<>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto user = userService.getUser(authentication.getPrincipal().toString());
+        if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
+            throw new UnauthorizedExeption("Unauthorized");
+        }
+        List<UserDto> listDto = userService.getAllUser();
+        listDto.forEach(u ->{
+            response.add(mapper.map(u,UserResponse.class));
+        });
+        return response;
+
     }
 
     @PostMapping
