@@ -8,6 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import lombok.Getter;
@@ -30,5 +33,10 @@ public class RoleEntity implements Serializable {
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<UserEntity> users;
+    
+    @ManyToMany
+    @JoinTable(name = "roles_menus", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
+    private List<MenuEntity> menus;
 
 }
