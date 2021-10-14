@@ -7,7 +7,6 @@ import com.accsin.models.responses.CheckListResponse;
 import com.accsin.models.shared.dto.CheckListDto;
 import com.accsin.models.shared.dto.CreateCheckListDto;
 import com.accsin.services.interfaces.CheckListServiceInterface;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.modelmapper.ModelMapper;

@@ -6,4 +6,5 @@ import com.accsin.models.shared.dto.ServiceDto;
 public interface ServiceServiceInterface {
     
     public ServiceDto createService(ServiceCreateDto service);
+    public ServiceDto updateService(ServiceCreateDto service);
 }

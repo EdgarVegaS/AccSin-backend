@@ -54,4 +54,12 @@ public class ServiceService implements ServiceServiceInterface {
         serviceDto.getMonthlyPayment().add(monthlyDto);
         return serviceDto;
     }
+
+    @Override
+    public ServiceDto updateService(ServiceCreateDto service) {
+
+         
+
+        return null;
+    }
 }

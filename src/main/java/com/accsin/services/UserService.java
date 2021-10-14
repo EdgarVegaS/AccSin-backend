@@ -3,6 +3,7 @@ package com.accsin.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.accsin.entities.UserEntity;
@@ -99,5 +100,17 @@ public class UserService implements UserServiceInterface {
         userEntity.setLastName(user.getLastName());
         userRepository.save(userEntity);
         return user;
+    }
+
+    @Override
+    public List<UserDto> getAllUser() {
+        
+        Iterable<UserEntity> listEntity = userRepository.findAll();
+        List<UserDto> listReturn = new ArrayList<>();
+        for (UserEntity userEntity : listEntity) {
+            listReturn.add(mapper.map(userEntity, UserDto.class));
+        }
+
+        return listReturn;
     }  
 }
