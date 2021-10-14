@@ -46,4 +46,15 @@ public class ServiceController {
         setCreateServiceResponse(response);
         return response;
     }
+
+    /*@PutMapping
+    public ServiceResponse updateService(@RequestBody ServiceCreateRequestModel requestModel){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto user = userService.getUser(authentication.getPrincipal().toString());
+        if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
+            throw new UnauthorizedExeption("Unauthorized");
+        }
+        ServiceCreateDto serviceCreateDto = mapper.map(requestModel, ServiceCreateDto.class);
+
+    }*/
 }

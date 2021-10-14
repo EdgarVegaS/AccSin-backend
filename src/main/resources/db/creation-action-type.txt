@@ -1,0 +1,10 @@
+INSERT INTO `accsin-dev`.action_type (id,action_type_id,action_type_name)
+	VALUES (1,'0953a9fb-be57-49e4-8428-6d541ec27f19','Modificacion de check list');
+INSERT INTO `accsin-dev`.action_type (id,action_type_id,action_type_name)
+	VALUES (2,'3d700d95-4d70-4597-912d-c6ab78719fc5','Visita');
+INSERT INTO `accsin-dev`.action_type (id,action_type_id,action_type_name)
+	VALUES (3,'1b48d8bb-2af2-4777-ba81-2241a2f3eb6b','Capacitacion de seguridad');
+INSERT INTO `accsin-dev`.action_type (id,action_type_id,action_type_name)
+	VALUES (4,'f2b21346-add4-44e4-b8fc-0ec3b3393ee3','Solicitar asesoria');
+INSERT INTO `accsin-dev`.action_type (id,action_type_id,action_type_name)
+	VALUES (5,'5b5031e8-b53c-4129-8808-25ce833d3800','Actualizacion de informes');
