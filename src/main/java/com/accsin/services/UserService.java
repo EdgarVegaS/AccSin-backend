@@ -78,10 +78,10 @@ public class UserService implements UserServiceInterface {
     public UserDto getUser(String email) {
 
         UserEntity userEntity = userRepository.findByEmail(email);
-
         if (userEntity == null) {
             throw new UsernameNotFoundException(email);
         }
+
         UserDto userToReturn = new UserDto();
         mapper.map(userEntity, userToReturn);
         userToReturn.setPassword(null);

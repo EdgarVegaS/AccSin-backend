@@ -1,10 +1,17 @@
 package com.accsin.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name = "menu")
-public class MenuEntity {
+public class MenuEntity implements Serializable{
     
     @Id
     @GeneratedValue
@@ -26,4 +33,5 @@ public class MenuEntity {
 
     @Column
     private String route;
+    
 }
