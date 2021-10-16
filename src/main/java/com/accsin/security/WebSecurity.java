@@ -37,6 +37,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, "/checklists").permitAll()
         .antMatchers(HttpMethod.GET, "/menu/*").permitAll()
         .antMatchers(HttpMethod.GET, "/actionTypes/*").permitAll()
+        .antMatchers(HttpMethod.POST, "/actionTypes/*").permitAll()
         .antMatchers(HttpMethod.PUT).permitAll()
         .anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
         .addFilter(new AuthorizationFilter(authenticationManager()))
