@@ -1,5 +1,6 @@
 package com.accsin.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,21 +10,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity(name = "action_type")
-public class ActionTypeEntity {
+public class ActionTypeEntity implements Serializable{
 
 	@Id
 	@GeneratedValue
 	private long id;
 
 	@Column(nullable = false)
-	private String actionTypeId;
+	private String action_type_id;
 
 	@Column(nullable = false, length = 80)
 	private Integer duration;
 	
     @Column(nullable = false)
-    private Date createdAt;
+    private Date created_at;
 
 	@OneToMany(mappedBy = "actionType")
 	private List<ActionEntity> actions;
@@ -32,12 +38,12 @@ public class ActionTypeEntity {
 	private Double price;
 
 	@Column(nullable = false)
-	private Double contractPrice;
+	private Double contract_price;
 
 	@Column(nullable = false)
 	private boolean enable;
 
 	@Column(nullable = false, length = 80)
-	private String actionTypeName;
+	private String action_type_name;
 
 }
