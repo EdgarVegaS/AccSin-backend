@@ -20,7 +20,7 @@ public class ActionTypeController {
     @Autowired
     ActionTypeService actionService;
     
-    @GetMapping("/get")
+    @GetMapping("/getActions")
     public List<ActionTypeDto> getMenu(){
     	return actionService.getAllActionTypes();
     	
