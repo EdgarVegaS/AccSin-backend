@@ -34,6 +34,7 @@ public class ActionTypeController {
         if (!authentication.isAuthenticated()) {
             throw new RuntimeException("Usuario no autenticado");
         }
+        //Edgar Hasta aca llegue
     	return actionService.getAllActionTypes();
     }
 }
