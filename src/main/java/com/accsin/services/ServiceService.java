@@ -2,13 +2,14 @@ package com.accsin.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.accsin.entities.ServiceEntity;
 import com.accsin.entities.UserEntity;
-import com.accsin.models.shared.dto.MonthlyPaymentDto;
 import com.accsin.models.shared.dto.ServiceCreateDto;
 import com.accsin.models.shared.dto.ServiceDto;
+import com.accsin.models.shared.dto.UserDto;
 import com.accsin.repositories.ServiceRepository;
 import com.accsin.repositories.UserRepository;
 import com.accsin.services.interfaces.ServiceServiceInterface;
@@ -32,34 +33,75 @@ public class ServiceService implements ServiceServiceInterface {
     @Autowired
     MonthlyPaymentService monthlyService;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public ServiceDto createService(ServiceCreateDto service) {
         
         UserEntity userEntity = userRepository.findByEmail(service.getUserEmail());
-        if (userEntity == null) {
-            throw new RuntimeException("El usuario no existe");
-        }else if(userEntity.getService() != null){
-            throw new RuntimeException("El Usuario ya tiene un servicio asociado");
-        }
-
         ServiceEntity serviceEntity = new ServiceEntity();
-        serviceEntity.setEnable(true);
+        serviceEntity.setEnable(service.isEnable());
         serviceEntity.setServiceId(UUID.randomUUID().toString());
         serviceEntity.setCreateAt(new Date());
         serviceEntity.setUser(userEntity);
+        serviceEntity.setContractPrice(service.getContractPrice());
+        serviceEntity.setDuration(service.getDuration());
+        serviceEntity.setName(service.getName());
+        serviceEntity.setUnitPrice(service.getUnitPrice());
         ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
-        MonthlyPaymentDto monthlyDto = monthlyService.createMonthlyPayment(service.getDayOfExpiration(), serviceEntity);
         ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
-        serviceDto.setMonthlyPayment(new ArrayList<>());
-        serviceDto.getMonthlyPayment().add(monthlyDto);
         return serviceDto;
     }
 
     @Override
     public ServiceDto updateService(ServiceCreateDto service) {
 
-         
+        ServiceEntity serviceEntity = serviceRepository.findByServiceId(service.getServiceId());
+        serviceEntity.setEnable(service.isEnable());
+        serviceEntity.setContractPrice(service.getContractPrice());
+        serviceEntity.setDuration(service.getDuration());
+        serviceEntity.setName(service.getName());
+        serviceEntity.setUnitPrice(service.getUnitPrice());
+        ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
+        ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
+        return serviceDto;
+       
+    }
 
-        return null;
+    @Override
+    public void deleteService(String id) {
+        ServiceEntity serviceEntity = serviceRepository.findByServiceId(id);
+        serviceRepository.delete(serviceEntity);
+    }
+
+    @Override
+    public ServiceDto getOneService(String id) {
+        ServiceEntity serviceEntity = serviceRepository.findByServiceId(id);
+        return mapper.map(serviceEntity, ServiceDto.class);
+    }
+
+    @Override
+    public List<ServiceDto> getAllService() {
+        Iterable<ServiceEntity> listEntities = serviceRepository.findAll();
+        List<ServiceDto> listDto = new ArrayList<>();
+        listEntities.forEach(s -> {
+            listDto.add(mapper.map(s, ServiceDto.class));
+        });
+        return listDto;
+    }
+    
+    @Override
+    public List<ServiceDto> getAllServicesByUser(String id){
+        
+        List<ServiceDto> listDto = new ArrayList<>();
+
+        UserDto user = userService.getUserByUserId(id);
+        List<ServiceEntity> listEntities = serviceRepository.findByUserId(user.getId());
+        listEntities.forEach(s ->{
+            listDto.add(mapper.map(s, ServiceDto.class));
+        });
+
+        return listDto;
     }
 }

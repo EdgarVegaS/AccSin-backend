@@ -8,7 +8,9 @@ import com.accsin.models.request.UserDetailRequestModel;
 import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.responses.UserResponse;
 import com.accsin.models.shared.dto.RoleDto;
+import com.accsin.models.shared.dto.ServiceDto;
 import com.accsin.models.shared.dto.UserDto;
+import com.accsin.services.ServiceService;
 import com.accsin.services.interfaces.UserServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +31,9 @@ public class UserController {
 
     @Autowired
     UserServiceInterface userService;
+
+    @Autowired
+    ServiceService serviceService;
 
     @Autowired
     ModelMapper mapper;
@@ -81,5 +87,11 @@ public class UserController {
         userDto = userService.updateUser(userDto);
         UserLoginResponse response = mapper.map(userDto, UserLoginResponse.class);
         return response;
+    }
+
+    @GetMapping("/services/{id}")
+    public List<ServiceDto> getServices(@PathVariable String id){
+        
+        return serviceService.getAllServicesByUser(id);
     }
 }
