@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class CheckListRequest {
     
-    private String userEmail;
+    private String contractId;
     private JsonNode jsonList;
     private JsonNode jsonMejoras;
 }

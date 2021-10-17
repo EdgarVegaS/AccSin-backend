@@ -13,5 +13,5 @@ public class ServiceCreateDto {
     private Integer duration;
     private Double unitPrice;
     private Double contractPrice;
-    private String userEmail;
+    private String contractId;
 }

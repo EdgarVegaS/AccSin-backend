@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.accsin.entities.ActionTypeEntity;
+import com.accsin.models.shared.dto.ActionTypeDto;
 import com.accsin.repositories.ActionTypeRepository;
 import com.accsin.services.interfaces.ActionTypeServiceInterface;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

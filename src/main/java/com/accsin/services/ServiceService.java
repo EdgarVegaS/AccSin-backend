@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.accsin.entities.ContractEntity;
 import com.accsin.entities.ServiceEntity;
-import com.accsin.entities.UserEntity;
 import com.accsin.models.shared.dto.ServiceCreateDto;
 import com.accsin.models.shared.dto.ServiceDto;
-import com.accsin.models.shared.dto.UserDto;
+import com.accsin.repositories.ContractRepository;
 import com.accsin.repositories.ServiceRepository;
 import com.accsin.repositories.UserRepository;
 import com.accsin.services.interfaces.ServiceServiceInterface;
@@ -28,6 +28,9 @@ public class ServiceService implements ServiceServiceInterface {
     ServiceRepository serviceRepository;
 
     @Autowired
+    ContractRepository contractRepository;
+
+    @Autowired
     ModelMapper mapper;
 
     @Autowired
@@ -38,20 +41,38 @@ public class ServiceService implements ServiceServiceInterface {
 
     @Override
     public ServiceDto createService(ServiceCreateDto service) {
-        
-        UserEntity userEntity = userRepository.findByEmail(service.getUserEmail());
+
+        ContractEntity contractEntity = contractRepository.findByContractId(service.getContractId());
         ServiceEntity serviceEntity = new ServiceEntity();
         serviceEntity.setEnable(service.isEnable());
         serviceEntity.setServiceId(UUID.randomUUID().toString());
         serviceEntity.setCreateAt(new Date());
-        serviceEntity.setUser(userEntity);
         serviceEntity.setContractPrice(service.getContractPrice());
         serviceEntity.setDuration(service.getDuration());
         serviceEntity.setName(service.getName());
         serviceEntity.setUnitPrice(service.getUnitPrice());
+        serviceEntity.setContract(contractEntity);
         ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
         ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
         return serviceDto;
+    }
+
+    @Override
+    public ServiceDto createService(ServiceCreateDto service, ContractEntity contractEntity) {
+
+        ServiceEntity serviceEntity = new ServiceEntity();
+        serviceEntity.setEnable(service.isEnable());
+        serviceEntity.setServiceId(UUID.randomUUID().toString());
+        serviceEntity.setCreateAt(new Date());
+        serviceEntity.setContractPrice(service.getContractPrice());
+        serviceEntity.setDuration(service.getDuration());
+        serviceEntity.setName(service.getName());
+        serviceEntity.setUnitPrice(service.getUnitPrice());
+        serviceEntity.setContract(contractEntity);
+        ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
+        ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
+        return serviceDto;
+
     }
 
     @Override
@@ -91,7 +112,7 @@ public class ServiceService implements ServiceServiceInterface {
         return listDto;
     }
     
-    @Override
+    /*@Override
     public List<ServiceDto> getAllServicesByUser(String id){
         
         List<ServiceDto> listDto = new ArrayList<>();
@@ -103,5 +124,5 @@ public class ServiceService implements ServiceServiceInterface {
         });
 
         return listDto;
-    }
+    }*/
 }

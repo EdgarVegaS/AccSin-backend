@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/checklists")
+@RequestMapping("/api/checklists")
 public class CheckListController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class CheckListController {
 
         String mejoras = resquest.getJsonMejoras().toString();
         String check = resquest.getJsonList().toString();
-        CreateCheckListDto createDto = CreateCheckListDto.builder().userEmail(resquest.getUserEmail())
+        CreateCheckListDto createDto = CreateCheckListDto.builder().contractId(resquest.getContractId())
                                                                    .jsonList(check).jsonMejoras(mejoras)
                                                                    .build();
         CheckListDto dtoCreated = checkListService.createCheckList(createDto);

@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.accsin.entities.CheckListEntity;
-import com.accsin.entities.UserEntity;
+import com.accsin.entities.ContractEntity;
 import com.accsin.models.shared.dto.CheckListDto;
 import com.accsin.models.shared.dto.CreateCheckListDto;
 import com.accsin.repositories.CheckListRepository;
-import com.accsin.repositories.UserRepository;
+import com.accsin.repositories.ContractRepository;
 import com.accsin.services.interfaces.CheckListServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -25,15 +25,15 @@ public class CheckListService implements CheckListServiceInterface {
     CheckListRepository checkListRepository;
 
     @Autowired
-    UserRepository userRepository;
+    ContractRepository contractRepository;
 
     @Override
     public CheckListDto createCheckList(CreateCheckListDto checklist) {
         
-        UserEntity userEntity = userRepository.findByEmail(checklist.getUserEmail());
+        ContractEntity contract = contractRepository.findByContractId(checklist.getContractId());
         CheckListEntity clEntity = new CheckListEntity();
         clEntity.setCheckListId(UUID.randomUUID().toString());
-        clEntity.setUser(userEntity);
+        clEntity.setContract(contract);
         clEntity.setJsonList(checklist.getJsonList());
         clEntity.setJsonMejoras(checklist.getJsonMejoras());
         clEntity.setCreateAt(new Date());
