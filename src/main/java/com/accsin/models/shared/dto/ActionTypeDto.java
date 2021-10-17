@@ -1,7 +1,6 @@
 package com.accsin.models.shared.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 import lombok.Getter;
 import lombok.Setter;

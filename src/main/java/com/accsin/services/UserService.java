@@ -112,5 +112,11 @@ public class UserService implements UserServiceInterface {
         }
 
         return listReturn;
+    }
+
+    @Override
+    public UserDto getUserByUserId(String id) {
+        UserEntity userEntity = userRepository.findByUserId(id);
+        return mapper.map(userEntity, UserDto.class);
     }  
 }

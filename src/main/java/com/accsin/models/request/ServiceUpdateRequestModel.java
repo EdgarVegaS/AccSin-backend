@@ -1,14 +1,11 @@
-package com.accsin.models.responses;
+package com.accsin.models.request;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
-@EqualsAndHashCode
-public class ServiceResponse {
+public class ServiceUpdateRequestModel {
 
     private String serviceId;
     private boolean enable;
@@ -17,4 +14,5 @@ public class ServiceResponse {
     private Double unitPrice;
     private Double contractPrice;
     private String userEmail;
+
 }

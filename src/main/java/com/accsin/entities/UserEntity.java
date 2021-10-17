@@ -52,10 +52,9 @@ public class UserEntity implements Serializable {
     @OneToOne(mappedBy = "user")
     private CheckListEntity checkList;
 
-    @OneToOne(mappedBy = "user")
-    private ServiceEntity service;
+    @OneToMany(mappedBy = "user")    
+    private List<ServiceEntity> service;
 
     @OneToMany(mappedBy = "user")
     private List<ActionEntity> actions;
-
 }

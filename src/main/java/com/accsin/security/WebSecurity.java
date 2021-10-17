@@ -32,8 +32,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                     "/configuration/security",
                     "/swagger-ui.html",
                     "/webjars/**").permitAll()
-        .antMatchers(HttpMethod.POST, "/users").permitAll()
-        .antMatchers(HttpMethod.POST, "/services").permitAll()
+        .antMatchers("/users").permitAll()
+        .antMatchers("/users/**").permitAll()
+        .antMatchers("/services/*").permitAll()
+        .antMatchers("/services").permitAll()
         .antMatchers(HttpMethod.POST, "/checklists").permitAll()
         .antMatchers(HttpMethod.GET, "/menu/*").permitAll()
         .antMatchers(HttpMethod.GET, "/actionTypes/*").permitAll()
