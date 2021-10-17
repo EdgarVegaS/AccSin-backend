@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ActionTypeRepository extends CrudRepository<ActionTypeEntity,LongAdder> {
+
+	ActionTypeEntity findByActionTypeName(String action_type_name);
     
 }

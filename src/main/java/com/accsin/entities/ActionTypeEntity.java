@@ -26,7 +26,7 @@ public class ActionTypeEntity implements Serializable{
 	private String action_type_id;
 
 	@Column(nullable = false, length = 80)
-	private Integer duration;
+	private Double duration;
 	
     @Column(nullable = false)
     private Date created_at;
@@ -43,7 +43,7 @@ public class ActionTypeEntity implements Serializable{
 	@Column(nullable = false)
 	private boolean enable;
 
-	@Column(nullable = false, length = 80)
-	private String action_type_name;
+	@Column(name= "action_type_name", nullable = false, length = 80)
+	private String actionTypeName;
 
 }

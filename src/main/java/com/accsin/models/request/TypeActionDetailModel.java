@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class TypeActionDetailModel {
     
-    private String action_type_name;
+    private String actionTypeName;
     private Double duration;
     private Double price;
     private Double contract_price;
