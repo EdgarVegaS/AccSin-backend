@@ -11,7 +11,7 @@ import lombok.Setter;
 public class ActionTypeDto implements Serializable{
  
     private long id;
-    private String action_type_name;
+    private String actionTypeName;
     private Double contract_price;
     private Double price;
     private String created_at;
