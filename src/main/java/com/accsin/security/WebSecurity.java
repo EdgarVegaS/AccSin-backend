@@ -32,14 +32,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                     "/configuration/security",
                     "/swagger-ui.html",
                     "/webjars/**").permitAll()
-        .antMatchers("/users").permitAll()
-        .antMatchers("/users/**").permitAll()
-        .antMatchers("/services/*").permitAll()
-        .antMatchers("/services").permitAll()
-        .antMatchers(HttpMethod.POST, "/checklists").permitAll()
-        .antMatchers(HttpMethod.GET, "/menu/*").permitAll()
-        .antMatchers(HttpMethod.GET, "/actionTypes/*").permitAll()
-        .antMatchers(HttpMethod.POST, "/actionTypes/*").permitAll()
+        .antMatchers("/api/users").permitAll()
+        .antMatchers("/api/users/**").permitAll()
+        .antMatchers("/api/services/*").permitAll()
+        .antMatchers("/api/services").permitAll()
+        .antMatchers("/api/contracts").permitAll()
+        .antMatchers("/api/contracts/*").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/checklists").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/menu/*").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/actionTypes/*").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/actionTypes/*").permitAll()
         .antMatchers(HttpMethod.PUT).permitAll()
         .anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
         .addFilter(new AuthorizationFilter(authenticationManager()))
@@ -55,7 +57,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public AuthenticationFilter getAuthenticationFilter() throws Exception{
         final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), new ModelMapper());
 
-        filter.setFilterProcessesUrl("/users/login");
+        filter.setFilterProcessesUrl("api/users/login");
         return filter;
     }
 

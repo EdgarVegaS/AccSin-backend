@@ -47,8 +47,8 @@ public class ServiceEntity {
     private Date createAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "contract_id")
+    private ContractEntity contract;
 
     @OneToMany(mappedBy = "service")
     private List<MonthlyPaymentEntity> monthlyPayment;

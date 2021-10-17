@@ -1,0 +1,18 @@
+INSERT INTO `accsin-dev`.menu
+(id, description, route, title)
+VALUES(1, 'Acceso a Agendamiento de servicios', '/agendamiento', 'Agendamiento');
+INSERT INTO `accsin-dev`.menu
+(id, description, route, title)
+VALUES(2, 'Acceso a Mantenedor', '/usuarios', 'Mantenedor de usuarios');
+INSERT INTO `accsin-dev`.menu
+(id, description, route, title)
+VALUES(3, 'Acceso a Reportes de sistema', '/reportes', 'Reportes Administrativos');
+INSERT INTO `accsin-dev`.menu
+(id, description, route, title)
+VALUES(4, 'Acceso a Mantenedor', '/servicios', 'Mantenedor de Servicios');
+INSERT INTO `accsin-dev`.menu
+(id, description, route, title)
+VALUES(5, 'Acceso a Mantenedor', '/contratos', 'Administracion de Contratos');
+INSERT INTO `accsin-dev`.menu
+(id, description, route, title)
+VALUES(6, 'Acceso a Informes', '/informes', 'Informe de Visitas');

@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
@@ -36,7 +35,7 @@ public class RoleEntity implements Serializable {
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<UserEntity> users;
     
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "roles_menus", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
     private List<MenuEntity> menus = new ArrayList<>();

@@ -37,7 +37,7 @@ public class CheckListEntity {
     private Date createAt;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "contract_id")
+    private ContractEntity contract;
 
 }

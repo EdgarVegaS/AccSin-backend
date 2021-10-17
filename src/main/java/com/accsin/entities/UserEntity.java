@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -49,11 +48,8 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    @OneToOne(mappedBy = "user")
-    private CheckListEntity checkList;
-
-    @OneToMany(mappedBy = "user")    
-    private List<ServiceEntity> service;
+    @OneToMany(mappedBy = "user")
+    private List<ContractEntity> contracts;
 
     @OneToMany(mappedBy = "user")
     private List<ActionEntity> actions;
