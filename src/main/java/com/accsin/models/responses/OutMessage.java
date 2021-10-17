@@ -1,9 +1,5 @@
 package com.accsin.models.responses;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import lombok.Getter;
 import lombok.Setter;
 

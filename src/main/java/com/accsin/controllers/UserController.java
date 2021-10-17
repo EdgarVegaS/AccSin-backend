@@ -9,6 +9,7 @@ import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.responses.UserResponse;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
+import com.accsin.services.ServiceService;
 import com.accsin.services.interfaces.UserServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -23,11 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     UserServiceInterface userService;
+
+    @Autowired
+    ServiceService serviceService;
 
     @Autowired
     ModelMapper mapper;
@@ -82,4 +86,10 @@ public class UserController {
         UserLoginResponse response = mapper.map(userDto, UserLoginResponse.class);
         return response;
     }
+
+    /*@GetMapping("/services/{id}")
+    public List<ServiceDto> getServices(@PathVariable String id){
+        
+        return serviceService.getAllServicesByUser(id);
+    }*/
 }

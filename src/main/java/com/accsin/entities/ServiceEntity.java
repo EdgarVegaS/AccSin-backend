@@ -3,14 +3,13 @@ package com.accsin.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -32,12 +31,24 @@ public class ServiceEntity {
     @Column(nullable = false)
     private boolean enable;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer duration;
+
+    @Column(nullable = false)
+    private Double unitPrice;
+
+    @Column(nullable = false)
+    private Double contractPrice;
+
     @CreatedDate
     private Date createAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name = "contract_id")
+    private ContractEntity contract;
 
     @OneToMany(mappedBy = "service")
     private List<MonthlyPaymentEntity> monthlyPayment;
