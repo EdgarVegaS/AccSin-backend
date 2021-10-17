@@ -1,14 +1,18 @@
 package com.accsin.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.accsin.models.request.TypeActionDetailModel;
+import com.accsin.models.responses.OutMessage;
 import com.accsin.models.shared.dto.ActionTypeDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.ActionTypeService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,24 +34,41 @@ public class ActionTypeController {
     ModelMapper mapper;
     
     @GetMapping("/getActions")
-    public List<ActionTypeDto> getActions(){
-    	return actionService.getAllActionTypes();
+    public ResponseEntity<Object> getActions(){
+    	OutMessage response = new OutMessage();
+    	try {
+    		List<ActionTypeDto> actionsList = new ArrayList<ActionTypeDto>();
+        	actionsList = actionService.getAllActionTypes();
+            return
+      			  ResponseEntity.ok().body(actionsList);
+			
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se produjo un error obteniendo la lista de servicios");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
+    	
+    	
     }
+    
     @PutMapping("/updateAction")
-    public List<ActionTypeDto> updateAction(@RequestBody TypeActionDetailModel typeActionDetails) throws Exception{
+    public ResponseEntity<Object> updateAction(@RequestBody TypeActionDetailModel typeActionDetails) throws Exception{
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
             throw new RuntimeException("Usuario no autenticado");
         }
+        OutMessage response = new OutMessage();
         ActionTypeDto actionType = mapper.map(typeActionDetails, ActionTypeDto.class);
         try {
         	actionType = actionService.updateActionType(actionType);
+        	response.setMessageTipe(OutMessage.MessageTipe.OK);
 		} catch (Exception e) {
 			System.out.println("Se ha producido un error actualizando el ActionType");
 		}
-        
-        System.out.println(typeActionDetails.getMail());
-        //Edgar Hasta aca llegue
-    	return actionService.getAllActionTypes();
+        return
+  			  ResponseEntity.ok().body(response);
     }
 }

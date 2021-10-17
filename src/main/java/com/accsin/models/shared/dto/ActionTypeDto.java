@@ -10,8 +10,13 @@ import lombok.Setter;
 @Setter
 public class ActionTypeDto implements Serializable{
  
-    private long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private long id;
     private String actionTypeName;
+    private String actionTypeId;
     private Double contract_price;
     private Double price;
     private String created_at;
