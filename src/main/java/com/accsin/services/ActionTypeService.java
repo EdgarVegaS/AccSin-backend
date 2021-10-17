@@ -32,7 +32,7 @@ public class ActionTypeService implements ActionTypeServiceInterface {
     }
     @Override
     public ActionTypeDto updateActionType(ActionTypeDto actionType) throws Exception {
-        ActionTypeEntity actionTypeEntity =  actionTypeRepository.findByActionTypeName(actionType.getActionTypeName());
+        ActionTypeEntity actionTypeEntity =  actionTypeRepository.findByActionTypeId(actionType.getActionTypeId());
 
         if (actionTypeEntity == null) {
             throw new Exception();

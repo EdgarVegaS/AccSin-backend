@@ -22,8 +22,8 @@ public class ActionTypeEntity implements Serializable{
 	@GeneratedValue
 	private long id;
 
-	@Column(nullable = false)
-	private String action_type_id;
+	@Column(name= "action_type_id", nullable = false)
+	private String actionTypeId;
 
 	@Column(nullable = false, length = 80)
 	private Double duration;
