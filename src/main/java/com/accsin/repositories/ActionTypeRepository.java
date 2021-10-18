@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ActionTypeRepository extends CrudRepository<ActionTypeEntity,LongAdder> {
 
 	ActionTypeEntity findByActionTypeId(String actionTypeId);
+	
+	ActionTypeEntity findByActionTypeName(String actionTypeName);
     
 }

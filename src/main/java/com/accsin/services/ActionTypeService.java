@@ -1,9 +1,12 @@
 package com.accsin.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.accsin.entities.ActionTypeEntity;
+import com.accsin.exeptions.ExistEmailExeption;
 import com.accsin.models.shared.dto.ActionTypeDto;
 import com.accsin.repositories.ActionTypeRepository;
 import com.accsin.services.interfaces.ActionTypeServiceInterface;
@@ -45,5 +48,21 @@ public class ActionTypeService implements ActionTypeServiceInterface {
         actionTypeRepository.save(actionTypeEntity);
         return actionType;
     }
+	@Override
+	public ActionTypeDto createActionType(ActionTypeDto actionType) throws Exception {
+		
+        if (actionTypeRepository.findByActionTypeName(actionType.getActionTypeName()) != null){
+            throw new ExistEmailExeption("El Servicio ya existe");
+        }
+            
+		UUID actionTypeID = UUID.randomUUID();
+		actionType.setActionTypeId(actionTypeID.toString());
+		ActionTypeEntity actionTypeEntity = new ActionTypeEntity();
+		mapper.map(actionType, actionTypeEntity);
+		actionTypeEntity.setCreated_at(new Date());
+		actionTypeRepository.save(actionTypeEntity);
+		return actionType;
+	}
+
     
 }

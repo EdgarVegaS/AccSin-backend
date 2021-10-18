@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,4 +68,28 @@ public class ActionTypeController {
         return
   			  ResponseEntity.ok().body(response);
     }
+    
+    @PostMapping("/createAction")
+    public ResponseEntity<Object> createAction(@RequestBody TypeActionDetailModel typeActionDetails) throws Exception{
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            throw new RuntimeException("Usuario no autenticado");
+        }
+        OutMessage response = new OutMessage();
+        ActionTypeDto actionType = mapper.map(typeActionDetails, ActionTypeDto.class);
+        try {
+        	actionType = actionService.createActionType(actionType);
+        	response.setMessageTipe(OutMessage.MessageTipe.OK);
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error creando el ActionType");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
+        return
+  			  ResponseEntity.ok().body(response);
+    }
+    
 }

@@ -9,4 +9,6 @@ public interface ActionTypeServiceInterface {
     public List<ActionTypeDto> getAllActionTypes();
 
 	ActionTypeDto updateActionType(ActionTypeDto actionType) throws Exception;
+
+	ActionTypeDto createActionType(ActionTypeDto actionType) throws Exception;
 }
