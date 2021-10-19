@@ -52,7 +52,7 @@ public class UserService implements UserServiceInterface {
         UUID userId = UUID.randomUUID();
         userEntity.setUserId(userId.toString());
         userEntity.setRole(roleRepository.findByName(user.getRole().getName()));
-        userEntity.setCreateAt(new Date());
+        userEntity.setCreate_at(new Date());
         
         UserEntity storedUserDetails = userRepository.save(userEntity);
 

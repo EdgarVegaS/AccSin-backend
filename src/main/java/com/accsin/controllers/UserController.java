@@ -1,12 +1,18 @@
 package com.accsin.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.accsin.exeptions.UnauthorizedExeption;
+import com.accsin.models.request.TypeActionDetailModel;
 import com.accsin.models.request.UserDetailRequestModel;
+import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.responses.UserResponse;
+import com.accsin.models.shared.dto.ActionTypeDto;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.ServiceService;
@@ -14,6 +20,7 @@ import com.accsin.services.interfaces.UserServiceInterface;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -45,21 +53,33 @@ public class UserController {
         UserLoginResponse userRest = new ModelMapper().map(userDto, UserLoginResponse.class);
         return userRest;
     }
+    
 
     @GetMapping("/all")
-    public List<UserResponse> getAllUsers(){
-        List<UserResponse> response = new ArrayList<>();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDto user = userService.getUser(authentication.getPrincipal().toString());
-        if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
-            throw new UnauthorizedExeption("Unauthorized");
-        }
-        List<UserDto> listDto = userService.getAllUser();
-        listDto.forEach(u ->{
-            response.add(mapper.map(u,UserResponse.class));
-        });
-        return response;
+    public ResponseEntity<Object> getAllUsers(@RequestParam String email) throws IOException{
+    	OutMessage response = new OutMessage();
+    	List<UserResponse> userList = new ArrayList<>();
+        try {
+        	 UserDto user = userService.getUser(email);
+             if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
+                 throw new UnauthorizedExeption("Unauthorized");                
+             }
+             List<UserDto> listDto = userService.getAllUser();
+             listDto.forEach(u ->{
+             	userList.add(mapper.map(u,UserResponse.class));
+             });
 
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error obteniendo los usuarios");
+			response.setDetail("Usuario no autorizado");
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
+        return 
+         		ResponseEntity.ok().body(userList);
+       
     }
 
     @PostMapping
