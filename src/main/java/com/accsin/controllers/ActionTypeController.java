@@ -91,5 +91,5 @@ public class ActionTypeController {
         return
   			  ResponseEntity.ok().body(response);
     }
-    
+	
 }
