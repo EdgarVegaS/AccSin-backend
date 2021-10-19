@@ -40,7 +40,13 @@ public class UserEntity implements Serializable {
 
     @Column(nullable = false)
     private String encryptedPassword;
-
+    
+    @Column
+    private Date birth_date;
+    
+    @Column (nullable = false)
+    String rut;
+    
     @CreatedDate
     private Date create_at;
     

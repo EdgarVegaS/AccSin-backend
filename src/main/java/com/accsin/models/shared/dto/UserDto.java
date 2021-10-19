@@ -20,5 +20,7 @@ public class UserDto implements Serializable {
     private RoleDto role;
     private ServiceDto service;
     private String create_at;
+    private String birth_date;
+    private String rut;
 
 }
