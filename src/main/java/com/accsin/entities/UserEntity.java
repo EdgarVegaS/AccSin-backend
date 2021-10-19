@@ -42,7 +42,7 @@ public class UserEntity implements Serializable {
     private String encryptedPassword;
 
     @CreatedDate
-    private Date createAt;
+    private Date create_at;
     
     @ManyToOne
     @JoinColumn(name = "role_id")
