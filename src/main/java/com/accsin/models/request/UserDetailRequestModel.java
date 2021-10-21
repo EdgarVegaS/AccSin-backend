@@ -13,7 +13,10 @@ public class UserDetailRequestModel {
     private String password;
     private String role;
     private String create_at;
-    private String birth_date;
+    private String birthDate;
     private String rut;
+    private String businessUser;
+    private String particularCondition;
+    private String position;
 
 }
