@@ -18,6 +18,7 @@ import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.ServiceService;
 import com.accsin.services.interfaces.UserServiceInterface;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,11 +57,11 @@ public class UserController {
     
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllUsers(@RequestParam String email) throws IOException{
+    public ResponseEntity<Object> getAllUsers() throws IOException{
     	OutMessage response = new OutMessage();
     	List<UserResponse> userList = new ArrayList<>();
         try {
-        	 UserDto user = userService.getUser(email);
+        	 UserDto user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
              if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
                  throw new UnauthorizedExeption("Unauthorized");                
              }
@@ -82,17 +83,41 @@ public class UserController {
        
     }
 
-    @PostMapping
-    public UserLoginResponse createUser(@RequestBody UserDetailRequestModel userDetails) {
-
-        UserDto userDto = mapper.map(userDetails, UserDto.class);
-        RoleDto roleDto = new RoleDto();
-        roleDto.setName(userDetails.getRole());
-        userDto.setRole(roleDto);
-        UserDto createdUser = userService.createUser(userDto);
-        UserLoginResponse userToReturn = mapper.map(createdUser, UserLoginResponse.class);
-        return userToReturn;
-    }
+	@PostMapping("/createUser")
+	public ResponseEntity<Object> createUser(@RequestBody UserDetailRequestModel userDetails) {
+		OutMessage response = new OutMessage();
+		UserDto user = userService
+				.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+		if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Creando al usuario");
+			response.setDetail("Usuario no autorizazdo");
+			throw new UnauthorizedExeption("Unauthorized");
+		} else {
+			try {
+				//Dejé este método con el response entity, falta darle TODA la lógica cuando no es un administrador.
+				UserDto userDto = mapper.map(userDetails, UserDto.class);
+				RoleDto roleDto = new RoleDto();
+				roleDto.setName(userDetails.getRole());
+				userDto.setRole(roleDto);
+				UserDto createdUser = userService.createUser(userDto);
+				UserLoginResponse userToReturn = mapper.map(createdUser, UserLoginResponse.class);
+				response.setMessageTipe(OutMessage.MessageTipe.OK);
+				response.setMessage("Usuario Creado");
+				response.setDetail("Se ha creado el usuario Correctamente");
+				return ResponseEntity.ok().body(response);
+				
+			} catch(Exception e) {
+				response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+				response.setMessage("Se ha producido un error Creando al usuario");
+				response.setDetail(e.getMessage());
+				e.printStackTrace();
+			}
+			
+		}
+		return ResponseEntity.ok().body(response);	
+	}
 
     @PutMapping
     public UserLoginResponse updateUser(@RequestBody UserDetailRequestModel userDetails){
