@@ -88,7 +88,6 @@ public class UserController {
 		OutMessage response = new OutMessage();
 		UserDto user = userService
 				.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 		if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("Se ha producido un error Creando al usuario");
@@ -119,17 +118,40 @@ public class UserController {
 		return ResponseEntity.ok().body(response);	
 	}
 
-    @PutMapping
-    public UserLoginResponse updateUser(@RequestBody UserDetailRequestModel userDetails){
-
+    @PutMapping("/updateUser")
+    public ResponseEntity<Object> updateUser(@RequestBody UserDetailRequestModel userDetails){
+    	OutMessage response = new OutMessage();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
+        	response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Creando al usuario");
+			response.setDetail("Usuario no autorizazdo");
             throw new RuntimeException("Usuario no autenticado");
-        }
-        UserDto userDto = mapper.map(userDetails,UserDto.class);
-        userDto = userService.updateUser(userDto);
-        UserLoginResponse response = mapper.map(userDto, UserLoginResponse.class);
-        return response;
+        }        
+        try {
+        	UserDto userDto = new UserDto();
+            //UserDto userDto = mapper.map(userDetails,UserDto.class);
+            userDto.setEmail(userDetails.getEmail());
+            userDto.setFirstName(userDetails.getFirstName());
+            userDto.setLastName(userDetails.getLastName());
+            userDto.setRut(userDetails.getRut());
+            userDto.setUserId(userDetails.getUserId());       
+            
+            userDto = userService.updateUser(userDto);
+            response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Usuario Creado");
+			response.setDetail("Se ha actualizado el usuario Correctamente");
+			return ResponseEntity.ok().body(response);
+			
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Actualizando al usuario");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+		}
+        
+		return ResponseEntity.ok().body(response);
+        
     }
 
     /*@GetMapping("/services/{id}")

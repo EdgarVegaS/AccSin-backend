@@ -18,5 +18,6 @@ public class UserDetailRequestModel {
     private String businessUser;
     private String particularCondition;
     private String position;
+    private String userId;
 
 }
