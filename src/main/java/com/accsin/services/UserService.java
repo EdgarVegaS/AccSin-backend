@@ -91,13 +91,16 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserDto updateUser(UserDto user) {
-        UserEntity userEntity =  userRepository.findByEmail(user.getEmail());
-
+        UserEntity userEntity =  userRepository.findByUserId(user.getUserId());
+        
         if (userEntity == null) {
             throw new UsernameNotFoundException(user.getEmail());
         }
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
+        userEntity.setRut(user.getRut());
+        userEntity.setEmail(user.getEmail());
+        //userEntity.setBirth_date(null);
         userRepository.save(userEntity);
         return user;
     }
