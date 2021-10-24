@@ -11,7 +11,6 @@ public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long id;
     private String userId;
     private String firstName;
     private String lastName;
@@ -19,8 +18,12 @@ public class UserDto implements Serializable {
     private String password;
     private RoleDto role;
     private ServiceDto service;
-    private String create_at;
-    private String birth_date;
+    private String createAt;
+    private String birthDate;
     private String rut;
+    private String businessUser;
+    private String particularCondition;
+    private String position;
+
 
 }

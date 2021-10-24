@@ -12,7 +12,7 @@ public class UserDetailRequestModel {
     private String email;
     private String password;
     private String role;
-    private String create_at;
+    private String createAt;
     private String birthDate;
     private String rut;
     private String businessUser;

@@ -17,7 +17,7 @@ public class UserResponse  implements Serializable{
     private String email;
     private RoleResponse role;
     private ServiceUserResponse service;
-    private String create_at;
-    private String birth_date;
+    private String createAt;
+    private String birthDate;
     private String rut;
 }

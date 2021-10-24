@@ -1,5 +1,6 @@
 package com.accsin.services;
 
+import static com.accsin.utils.DateTimeUtils.parseStringToDate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,22 +44,23 @@ public class UserService implements UserServiceInterface {
             throw new ExistEmailExeption("El Correo ya existe");
         }
             
-
         UserEntity userEntity = new UserEntity();
-        //BeanUtils.copyProperties(user, userEntity);
-        mapper.map(user, userEntity);
 
         userEntity.setEncryptedPassword(bcrypt.encode(user.getPassword()));
-        UUID userId = UUID.randomUUID();
-        userEntity.setUserId(userId.toString());
+        userEntity.setUserId(UUID.randomUUID().toString());
         userEntity.setRole(roleRepository.findByName(user.getRole().getName()));
-        userEntity.setCreate_at(new Date());
-        
+        userEntity.setCreateAt(new Date());
+        userEntity.setBirthDate(parseStringToDate(user.getBirthDate()));
+        userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : user.getBusinessUser());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+        userEntity.setParticularCondition((user.getParticularCondition() == null)? null:  user.getParticularCondition());
+        userEntity.setPosition((user.getPosition() == null) ? null : user.getPosition());
+        userEntity.setRut(user.getRut());
+    
         UserEntity storedUserDetails = userRepository.save(userEntity);
-
-        UserDto userToReturn = new UserDto();
-        mapper.map(storedUserDetails, userToReturn);
-        //BeanUtils.copyProperties(storedUserDetails, userToReturn);
+        UserDto userToReturn = mapper.map(storedUserDetails, UserDto.class);
 
         return userToReturn;
     }
@@ -121,5 +123,28 @@ public class UserService implements UserServiceInterface {
     public UserDto getUserByUserId(String id) {
         UserEntity userEntity = userRepository.findByUserId(id);
         return mapper.map(userEntity, UserDto.class);
-    }  
+    }
+
+    @Override
+    public List<UserDto> getUsersByRole(int role) {
+        List<UserDto> usersDto = new ArrayList<>();
+        List<UserEntity> userEntities = userRepository.getUsersByRole(role);
+        userEntities.forEach(u ->{
+            usersDto.add(mapper.map(u, UserDto.class));
+        });
+        return usersDto;
+    }
+
+    @Override
+    public boolean updatePasswordUser(String email,String password) {
+        
+        UserEntity userEntity = userRepository.findByEmail(email);
+        userEntity.setEncryptedPassword(bcrypt.encode(password));
+        UserEntity userUpdated = userRepository.save(userEntity);
+        if (userUpdated != null) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -35,5 +35,14 @@ public final class DateTimeUtils {
         Date date = calendar.getTime();
         return dt.format(date);
     }
-    
+
+    public static Date parseStringToDate(String dateString){
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = df.parse(dateString);
+            return date;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
