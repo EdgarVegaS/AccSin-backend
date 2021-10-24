@@ -42,13 +42,22 @@ public class UserEntity implements Serializable {
     private String encryptedPassword;
     
     @Column
-    private Date birth_date;
+    private Date birthDate;
     
     @Column (nullable = false)
     String rut;
     
     @CreatedDate
-    private Date create_at;
+    private Date createAt;
+
+    @Column
+    private String businessUser;
+
+    @Column 
+    private String particularCondition;
+
+    @Column 
+    private String position;
     
     @ManyToOne
     @JoinColumn(name = "role_id")

@@ -4,21 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import com.accsin.exeptions.UnauthorizedExeption;
-import com.accsin.models.request.TypeActionDetailModel;
+import com.accsin.models.request.UpdatePasswordRequest;
 import com.accsin.models.request.UserDetailRequestModel;
 import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.responses.UserResponse;
-import com.accsin.models.shared.dto.ActionTypeDto;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.ServiceService;
 import com.accsin.services.interfaces.UserServiceInterface;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -83,6 +79,44 @@ public class UserController {
        
     }
 
+	@GetMapping("/get-clients")
+	public ResponseEntity<Object> getClients(){
+		
+		List<UserResponse> responseList = new ArrayList<>();
+		try {
+			List<UserDto> userDto = userService.getUsersByRole(3);
+			userDto.forEach(u ->{
+				responseList.add(mapper.map(u, UserResponse.class));
+			});
+		} catch (Exception e) {
+			OutMessage response = new OutMessage();
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Obtener Lista de clientes");
+			response.setDetail("Error al obtener lista de clientes");
+			return ResponseEntity.ok().body(response);
+		}
+		return ResponseEntity.ok().body(responseList);
+	}
+
+	@GetMapping("/get-professionals")
+	public ResponseEntity<Object> getProfessionals(){
+
+		List<UserResponse> responseList = new ArrayList<>();
+		try {
+			List<UserDto> userDto = userService.getUsersByRole(4);
+			userDto.forEach(u ->{
+				responseList.add(mapper.map(u, UserResponse.class));
+			});
+		} catch (Exception e) {
+			OutMessage response = new OutMessage();
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Obtener Lista de profesionales");
+			response.setDetail("Error al obtener lista de profesionales");
+			return ResponseEntity.ok().body(response);
+		}
+		return ResponseEntity.ok().body(responseList);
+	}
+
 	@PostMapping("/createUser")
 	public ResponseEntity<Object> createUser(@RequestBody UserDetailRequestModel userDetails) {
 		OutMessage response = new OutMessage();
@@ -100,8 +134,8 @@ public class UserController {
 				RoleDto roleDto = new RoleDto();
 				roleDto.setName(userDetails.getRole());
 				userDto.setRole(roleDto);
-				UserDto createdUser = userService.createUser(userDto);
-				UserLoginResponse userToReturn = mapper.map(createdUser, UserLoginResponse.class);
+				userService.createUser(userDto);
+				//UserLoginResponse userToReturn = mapper.map(createdUser, UserLoginResponse.class);
 				response.setMessageTipe(OutMessage.MessageTipe.OK);
 				response.setMessage("Usuario Creado");
 				response.setDetail("Se ha creado el usuario Correctamente");
@@ -129,13 +163,13 @@ public class UserController {
             throw new RuntimeException("Usuario no autenticado");
         }        
         try {
-        	UserDto userDto = new UserDto();
-            //UserDto userDto = mapper.map(userDetails,UserDto.class);
-            userDto.setEmail(userDetails.getEmail());
+        	//UserDto userDto = new UserDto();
+            UserDto userDto = mapper.map(userDetails,UserDto.class);
+            /*userDto.setEmail(userDetails.getEmail());
             userDto.setFirstName(userDetails.getFirstName());
             userDto.setLastName(userDetails.getLastName());
             userDto.setRut(userDetails.getRut());
-            userDto.setUserId(userDetails.getUserId());       
+            userDto.setUserId(userDetails.getUserId());*/      
             
             userDto = userService.updateUser(userDto);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
@@ -154,9 +188,30 @@ public class UserController {
         
     }
 
-    /*@GetMapping("/services/{id}")
-    public List<ServiceDto> getServices(@PathVariable String id){
-        
-        return serviceService.getAllServicesByUser(id);
-    }*/
+	@PostMapping("/update-password")
+	private ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordRequest request){
+		OutMessage response = new OutMessage();
+
+		try {
+			boolean isUdpated = userService.updatePasswordUser(request.getEmail(), request.getNewPassword());
+			if (isUdpated) {
+				response.setMessageTipe(OutMessage.MessageTipe.OK);
+				response.setMessage("Contraseña actualizada");
+				response.setDetail("Se ha actualizado la contraseña del usuario Correctamente");
+				return ResponseEntity.ok().body(response);
+			}else{
+				response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+				response.setMessage("Error al actualizar contraseña");
+				response.setDetail("No se pudo actualizar la contraseña del usuario");
+				return ResponseEntity.ok().body(response);
+			}
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Actualizando la contraseña del usuario");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().body(response);
+	}
+	
 }
