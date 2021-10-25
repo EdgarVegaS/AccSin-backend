@@ -21,11 +21,13 @@ import com.accsin.repositories.RoleRepository;
 import com.accsin.repositories.UserRepository;
 import com.accsin.repositories.recoveryPasswordRepository;
 import com.accsin.services.interfaces.UserServiceInterface;
+import com.accsin.utils.DateTimeUtils;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -165,11 +167,11 @@ public class UserService implements UserServiceInterface {
         }
         return false;
     }
-    
+       
     @Override
-    public boolean sentEmailRecovery(String email) {
+    public boolean sentEmailRecovery(String email) throws Exception {
     	   Date now = new Date();
-    	   Date tomorrow = addDays(now, 1);
+    	   Date tomorrow = DateTimeUtils.addDays(now, 1);
     	   boolean sentMail = searchPasswordRequest(email);
     	   if(sentMail) {
     		   try {
@@ -194,7 +196,7 @@ public class UserService implements UserServiceInterface {
     				return false;
     			}
     	   } else
-    		   return false;
+    		   throw new Exception("Ya existe un código vigente");
     }
     
     @Override
@@ -221,7 +223,7 @@ public class UserService implements UserServiceInterface {
     			request.setEnable(false);
     			recoveryPasswordRepository.save(request);
     			return true;
-    		}
+    		} 
     		return false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,13 +250,7 @@ public class UserService implements UserServiceInterface {
         return builder.toString(); 
     	
     }
-    private Date addDays(Date date, int days)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, days); //minus number would decrement the days
-        return cal.getTime();
-    }
+
     
 
 }

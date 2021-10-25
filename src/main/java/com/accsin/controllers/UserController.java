@@ -221,7 +221,6 @@ public class UserController {
 		OutMessage response = new OutMessage();
 
 		try {
-			UserDto user = userService.getUser(email);
 			userService.sentEmailRecovery(email);
 			response.setMessageTipe(OutMessage.MessageTipe.OK);
 			response.setMessage("Contraseña actualizada");
@@ -231,7 +230,7 @@ public class UserController {
 		} catch (Exception e) {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("Se ha producido un error");
-			response.setDetail("No existe un usuario con la información ingresada, reintente");
+			response.setDetail(e.getMessage());
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().body(response);
