@@ -1,5 +1,6 @@
 package com.accsin.services.interfaces;
 
+import java.util.Date;
 import java.util.List;
 
 import com.accsin.models.shared.dto.UserDto;
@@ -16,4 +17,5 @@ public interface UserServiceInterface extends UserDetailsService {
     public List<UserDto> getAllUser();
     public List<UserDto> getUsersByRole(int role);
 	boolean sentEmailRecovery(String email);
+	boolean validateCode(String email, String code);
 }
