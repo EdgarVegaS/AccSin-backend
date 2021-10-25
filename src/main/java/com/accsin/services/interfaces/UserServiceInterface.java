@@ -15,4 +15,5 @@ public interface UserServiceInterface extends UserDetailsService {
     public UserDto updateUser(UserDto user);
     public List<UserDto> getAllUser();
     public List<UserDto> getUsersByRole(int role);
+	boolean sentEmailRecovery(String email);
 }
