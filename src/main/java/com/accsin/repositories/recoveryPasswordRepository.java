@@ -20,5 +20,7 @@ public interface recoveryPasswordRepository extends PagingAndSortingRepository<r
 	@Query(value="SELECT * FROM recovery_password WHERE email = :email AND temporal_code = :code AND enable = true AND expired_at > :dateNow ORDER BY expired_at DESC LIMIT 1", nativeQuery=true)
 	recoveryPasswordEntity findByEmailAndCode(String email, String code, Date dateNow);
     
+	@Query(value="SELECT * FROM recovery_password WHERE create_at BETWEEN :yesterday AND :today AND enable = true", nativeQuery=true)
+	List<recoveryPasswordEntity> findAllenabled(Date today, Date yesterday);
     
 }
