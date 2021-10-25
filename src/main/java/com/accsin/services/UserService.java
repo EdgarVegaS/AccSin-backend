@@ -16,6 +16,8 @@ import com.accsin.services.interfaces.UserServiceInterface;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +38,9 @@ public class UserService implements UserServiceInterface {
     
     @Autowired
     ModelMapper mapper;
+    
+    @Autowired
+	private JavaMailSender emailSender;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -146,5 +151,27 @@ public class UserService implements UserServiceInterface {
         }
         return false;
     }
+    
+    @Override
+    public boolean sentEmailRecovery(String email) {
+    	
+    	try {
+    		System.out.println("enviando");
+    		SimpleMailMessage message = new SimpleMailMessage(); 
+            message.setFrom("noreply@accsin.com");
+            message.setTo(email); 
+            message.setSubject("AccSin - Recuperación de Contraseña"); 
+            message.setText("test");
+            emailSender.send(message);
+    		return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+    	
+    	
+    }
+    
 
 }

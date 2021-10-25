@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -209,6 +210,49 @@ public class UserController {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("Se ha producido un error Actualizando la contraseña del usuario");
 			response.setDetail(e.getMessage());
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/recovery-password")
+	private ResponseEntity<Object> recoveryPassword(@RequestParam String email) {
+		OutMessage response = new OutMessage();
+
+		try {
+			UserDto user = userService.getUser(email);
+			userService.sentEmailRecovery(email);
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Contraseña actualizada");
+			response.setDetail("Se ha enviado un correo electrónico con las instrucciones");
+			return ResponseEntity.ok().body(response);
+
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error");
+			response.setDetail("No existe un usuario con la información ingresada, reintente");
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@GetMapping("/validate-code")
+	private ResponseEntity<Object> validateCode(@RequestParam String code, @RequestParam String email) {
+		OutMessage response = new OutMessage();
+
+		try {
+			//Validar con base de datos el correo y correo
+			UserDto user = userService.getUser(email);
+			userService.sentEmailRecovery(email);
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Contraseña actualizada");
+			response.setDetail("Se ha enviado un correo electrónico con las instrucciones");
+			return ResponseEntity.ok().body(response);
+
+		} catch (Exception e) {
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error");
+			response.setDetail("No existe un usuario con la información ingresada, reintente");
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().body(response);
