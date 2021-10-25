@@ -2,16 +2,24 @@ package com.accsin.services;
 
 import static com.accsin.utils.DateTimeUtils.parseStringToDate;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.UUID;
 
 import com.accsin.entities.UserEntity;
+import com.accsin.entities.recoveryPasswordEntity;
 import com.accsin.exeptions.ExistEmailExeption;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.repositories.RoleRepository;
 import com.accsin.repositories.UserRepository;
+import com.accsin.repositories.recoveryPasswordRepository;
 import com.accsin.services.interfaces.UserServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -29,6 +37,9 @@ public class UserService implements UserServiceInterface {
 
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    recoveryPasswordRepository recoveryPasswordRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -147,6 +158,9 @@ public class UserService implements UserServiceInterface {
         userEntity.setEncryptedPassword(bcrypt.encode(password));
         UserEntity userUpdated = userRepository.save(userEntity);
         if (userUpdated != null) {
+    		recoveryPasswordEntity request = recoveryPasswordRepository.findByEmail(email);
+    		request.setEnable(false);
+    		recoveryPasswordRepository.save(request);
             return true;
         }
         return false;
@@ -154,23 +168,92 @@ public class UserService implements UserServiceInterface {
     
     @Override
     public boolean sentEmailRecovery(String email) {
-    	
+    	   Date now = new Date();
+    	   Date tomorrow = addDays(now, 1);
+    	   boolean sentMail = searchPasswordRequest(email);
+    	   if(sentMail) {
+    		   try {
+    	    		SimpleMailMessage message = new SimpleMailMessage(); 
+    	            message.setFrom("noreply@accsin.com");
+    	            String code = randomCodeGenerator();
+    	            recoveryPasswordEntity passCode = new recoveryPasswordEntity();
+    	            passCode.setEmail(email);
+    	            passCode.setTemporalCode(code);
+    	            passCode.setCreateAt(now);
+    	            passCode.setExpiredAt(tomorrow);
+    	            passCode.setEnable(true);
+    	            message.setTo(email); 
+    	            message.setSubject("AccSin - Recuperación de Contraseña"); 
+    	            message.setText(code);
+    	            recoveryPasswordRepository.save(passCode);
+    	            //emailSender.send(message);
+    	    		return true;
+    				
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    				return false;
+    			}
+    	   } else
+    		   return false;
+    }
+    
+    @Override
+	public boolean validateCode(String email, String code) {
+    	Date now = new Date();
     	try {
-    		System.out.println("enviando");
-    		SimpleMailMessage message = new SimpleMailMessage(); 
-            message.setFrom("noreply@accsin.com");
-            message.setTo(email); 
-            message.setSubject("AccSin - Recuperación de Contraseña"); 
-            message.setText("test");
-            emailSender.send(message);
+    		recoveryPasswordEntity recovery = recoveryPasswordRepository.findByEmailAndCode(email, code, now);
+    		recovery.getEmail();
     		return true;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+		
+	}
+
+	private boolean searchPasswordRequest(String email) {
+    	try {
+    		Date now = new Date();
+    		//Si no encuentra un objeto, no existe ninguna solicitud, por lo que retorna true
+    		recoveryPasswordEntity request = recoveryPasswordRepository.findByEmail(email);
+    		if(request.getExpiredAt().before(now)) {
+    			//Si existe, sin embargo la fecha de expiración ya ha sucedido, anula la solicitud anterior y retorna true
+    			request.setEnable(false);
+    			recoveryPasswordRepository.save(request);
+    			return true;
+    		}
+    		return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return true;
+		}
+    }
+    
+    private String randomCodeGenerator() {
+        StringBuilder builder;
+        int i = 8;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    + "0123456789"; 
+        //create the StringBuffer
+        builder = new StringBuilder(i); 
+        for (int m = 0; m < i; m++) { 
+            // generate numeric
+            int myindex 
+                = (int)(characters.length() 
+                        * Math.random()); 
+            // add the characters
+            builder.append(characters 
+                        .charAt(myindex)); 
+        } 
+        return builder.toString(); 
     	
-    	
+    }
+    private Date addDays(Date date, int days)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
     }
     
 

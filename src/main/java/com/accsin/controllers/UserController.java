@@ -13,6 +13,7 @@ import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.responses.UserResponse;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
+import com.accsin.repositories.recoveryPasswordRepository;
 import com.accsin.services.ServiceService;
 import com.accsin.services.interfaces.UserServiceInterface;
 
@@ -237,22 +238,29 @@ public class UserController {
 	}
 	
 	@GetMapping("/validate-code")
-	private ResponseEntity<Object> validateCode(@RequestParam String code, @RequestParam String email) {
+	public ResponseEntity<Object> validateCode(@RequestParam String code, @RequestParam String email) {
 		OutMessage response = new OutMessage();
 
 		try {
 			//Validar con base de datos el correo y correo
-			UserDto user = userService.getUser(email);
-			userService.sentEmailRecovery(email);
-			response.setMessageTipe(OutMessage.MessageTipe.OK);
-			response.setMessage("Contraseña actualizada");
-			response.setDetail("Se ha enviado un correo electrónico con las instrucciones");
-			return ResponseEntity.ok().body(response);
-
+			boolean validate = userService.validateCode(email, code);
+			
+			if(validate) {
+				response.setMessageTipe(OutMessage.MessageTipe.OK);
+				response.setMessage("OK");
+				response.setDetail("Se ha validado el código correctamente");
+				return ResponseEntity.ok().body(response);
+			} else {
+				response.setMessageTipe(OutMessage.MessageTipe.OK);
+				response.setMessage("ERROR_NOT_FOUND");
+				response.setDetail("No se ha encontrado información o bien el código ha expirado");
+				return ResponseEntity.ok().body(response);
+			}
+			
 		} catch (Exception e) {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
-			response.setMessage("Se ha producido un error");
-			response.setDetail("No existe un usuario con la información ingresada, reintente");
+			response.setMessage("ERROR");
+			response.setDetail("Se ha producido un error consultando el servicio");
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().body(response);
