@@ -188,7 +188,7 @@ public class UserService implements UserServiceInterface {
     	            message.setSubject("AccSin - Recuperación de Contraseña"); 
     	            message.setText(code);
     	            recoveryPasswordRepository.save(passCode);
-    	            //emailSender.send(message);
+    	            emailSender.send(message);
     	    		return true;
     				
     			} catch (Exception e) {
