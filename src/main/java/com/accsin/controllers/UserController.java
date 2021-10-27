@@ -175,7 +175,7 @@ public class UserController {
             
             userDto = userService.updateUser(userDto);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
-			response.setMessage("Usuario Creado");
+			response.setMessage("Usuario Actualizado");
 			response.setDetail("Se ha actualizado el usuario Correctamente");
 			return ResponseEntity.ok().body(response);
 			
@@ -223,14 +223,14 @@ public class UserController {
 		try {
 			userService.sentEmailRecovery(email);
 			response.setMessageTipe(OutMessage.MessageTipe.OK);
-			response.setMessage("Contraseña actualizada");
+			response.setMessage("Cambio de contraseña en proceso");
 			response.setDetail("Se ha enviado un correo electrónico con las instrucciones");
 			return ResponseEntity.ok().body(response);
 
 		} catch (Exception e) {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("Se ha producido un error");
-			response.setDetail(e.getMessage());
+			response.setDetail("No se ha encontrado un usuario con el correo ingresado");
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().body(response);
@@ -250,8 +250,8 @@ public class UserController {
 				response.setDetail("Se ha validado el código correctamente");
 				return ResponseEntity.ok().body(response);
 			} else {
-				response.setMessageTipe(OutMessage.MessageTipe.OK);
-				response.setMessage("ERROR_NOT_FOUND");
+				response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+				response.setMessage("Error");
 				response.setDetail("No se ha encontrado información o bien el código ha expirado");
 				return ResponseEntity.ok().body(response);
 			}
