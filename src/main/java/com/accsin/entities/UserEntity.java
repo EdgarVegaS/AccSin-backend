@@ -66,6 +66,9 @@ public class UserEntity implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<ContractEntity> contracts;
 
-    @OneToMany(mappedBy = "user")
-    private List<ActionEntity> actions;
+    @OneToMany(mappedBy = "professional")
+    private List<ScheduleEntity> schedules;
+
+    @OneToMany(mappedBy = "client")
+    private List<ServiceRequestEntity> serviceResquest;
 }

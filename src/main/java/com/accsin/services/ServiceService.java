@@ -51,7 +51,7 @@ public class ServiceService implements ServiceServiceInterface {
         serviceEntity.setDuration(service.getDuration());
         serviceEntity.setName(service.getName());
         serviceEntity.setUnitPrice(service.getUnitPrice());
-        serviceEntity.setContract(contractEntity);
+        //serviceEntity.setContract(contractEntity);
         ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
         ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
         return serviceDto;
@@ -68,7 +68,7 @@ public class ServiceService implements ServiceServiceInterface {
         serviceEntity.setDuration(service.getDuration());
         serviceEntity.setName(service.getName());
         serviceEntity.setUnitPrice(service.getUnitPrice());
-        serviceEntity.setContract(contractEntity);
+        //serviceEntity.setContract(contractEntity);
         ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
         ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
         return serviceDto;

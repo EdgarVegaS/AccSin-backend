@@ -57,9 +57,9 @@ public class ContractEntity {
     @JoinColumn(name = "contract_type_id")
     private ContractTypeEntity contractType;
 
-    @OneToMany(mappedBy = "contract", cascade = {CascadeType.ALL, CascadeType.REMOVE})
-    private List<ServiceEntity> services = new ArrayList<>();
-
     @OneToOne(mappedBy = "contract",cascade = {CascadeType.ALL, CascadeType.REMOVE})
     private CheckListEntity checkList;
+
+    @OneToMany(mappedBy = "contract")
+    private List<MonthlyPaymentEntity> monthlyPayments;
 }
