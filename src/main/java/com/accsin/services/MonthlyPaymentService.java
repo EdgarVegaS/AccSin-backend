@@ -29,7 +29,7 @@ public class MonthlyPaymentService implements MonthlyPaymentServiceInterface {
         MonthlyPaymentEntity entity = new MonthlyPaymentEntity();
         entity.setExpirationDate(getDateNextMonth(date));
         entity.setMonthlyPaymentId(UUID.randomUUID().toString());
-        entity.setService(serviceEntity);
+        //entity.setService(serviceEntity);
         entity.setTotal(300000.0);
         MonthlyPaymentEntity entityResponse = monthlyPaymentRepository.save(entity);
         return mapper.map(entityResponse, MonthlyPaymentDto.class);
