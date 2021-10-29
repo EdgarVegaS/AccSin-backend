@@ -129,29 +129,29 @@ public class UserController {
 			response.setMessage("Se ha producido un error Creando al usuario");
 			response.setDetail("Usuario no autorizazdo");
 			throw new UnauthorizedExeption("Unauthorized");
+			
 		} else {
 			try {
-				//Dejé este método con el response entity, falta darle TODA la lógica cuando no es un administrador.
 				UserDto userDto = mapper.map(userDetails, UserDto.class);
 				RoleDto roleDto = new RoleDto();
 				roleDto.setName(userDetails.getRole());
 				userDto.setRole(roleDto);
 				userService.createUser(userDto);
-				//UserLoginResponse userToReturn = mapper.map(createdUser, UserLoginResponse.class);
+				// UserLoginResponse userToReturn = mapper.map(createdUser,
+				// UserLoginResponse.class);
 				response.setMessageTipe(OutMessage.MessageTipe.OK);
 				response.setMessage("Usuario Creado");
 				response.setDetail("Se ha creado el usuario Correctamente");
 				return ResponseEntity.ok().body(response);
-				
-			} catch(Exception e) {
+
+			} catch (Exception e) {
 				response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 				response.setMessage("Se ha producido un error Creando al usuario");
 				response.setDetail(e.getMessage());
 				e.printStackTrace();
 			}
-			
 		}
-		return ResponseEntity.ok().body(response);	
+		return ResponseEntity.ok().body(response);
 	}
 
     @PutMapping("/updateUser")
@@ -165,14 +165,10 @@ public class UserController {
             throw new RuntimeException("Usuario no autenticado");
         }        
         try {
-        	//UserDto userDto = new UserDto();
-            UserDto userDto = mapper.map(userDetails,UserDto.class);
-            /*userDto.setEmail(userDetails.getEmail());
-            userDto.setFirstName(userDetails.getFirstName());
-            userDto.setLastName(userDetails.getLastName());
-            userDto.setRut(userDetails.getRut());
-            userDto.setUserId(userDetails.getUserId());*/      
-            
+            UserDto userDto = mapper.map(userDetails,UserDto.class);  
+			RoleDto roleDto = new RoleDto();
+			roleDto.setName(userDetails.getRole());
+			userDto.setRole(roleDto);
             userDto = userService.updateUser(userDto);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
 			response.setMessage("Usuario Actualizado");
@@ -230,7 +226,7 @@ public class UserController {
 		} catch (Exception e) {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("Se ha producido un error");
-			response.setDetail("No se ha encontrado un usuario con el correo ingresado");
+			response.setDetail(e.getMessage());
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().body(response);
