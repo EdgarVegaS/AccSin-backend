@@ -150,7 +150,6 @@ public class UserController {
 				e.printStackTrace();
 			}
 			
-		}
 		return ResponseEntity.ok().body(response);	
 	}
 
@@ -165,14 +164,7 @@ public class UserController {
             throw new RuntimeException("Usuario no autenticado");
         }        
         try {
-        	//UserDto userDto = new UserDto();
-            UserDto userDto = mapper.map(userDetails,UserDto.class);
-            /*userDto.setEmail(userDetails.getEmail());
-            userDto.setFirstName(userDetails.getFirstName());
-            userDto.setLastName(userDetails.getLastName());
-            userDto.setRut(userDetails.getRut());
-            userDto.setUserId(userDetails.getUserId());*/      
-            
+            UserDto userDto = mapper.map(userDetails,UserDto.class);               
             userDto = userService.updateUser(userDto);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
 			response.setMessage("Usuario Actualizado");
