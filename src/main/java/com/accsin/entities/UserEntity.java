@@ -50,14 +50,12 @@ public class UserEntity implements Serializable {
     @CreatedDate
     private Date createAt;
 
-    @Column
-    private String businessUser;
-
     @Column 
     private String particularCondition;
 
-    @Column 
-    private String position;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private PositionEntity position;
     
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -71,4 +69,8 @@ public class UserEntity implements Serializable {
 
     @OneToMany(mappedBy = "client")
     private List<ServiceRequestEntity> serviceResquest;
+
+    @ManyToOne
+    @JoinColumn(name = "business_user_id")
+    private BusinessUserEntity businessUser;
 }

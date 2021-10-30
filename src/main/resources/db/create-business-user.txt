@@ -1,0 +1,63 @@
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(1, 'Agricultura, Ganadería, Silvicultura y Pesca');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(2, 'Explotación de Minas y Canteras');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(3, 'Industrias Manufacturera');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(4, 'Suministro de Electricidad, Gas, Vapor y Aire Acondicionado');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(5, 'Suministro de Agua; Evacuación de Agua residuales, gestión de desechos y descontaminación');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(6, 'Construcción');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(7, 'Comercio al Por Mayor y al por Menor; Reparación de Vehículos Automotores y Motocicletas');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(8, 'Transporte y Almacenamiento');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(9, 'Actividades de Alojamiento y de Servicio de Comidas');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(10, 'Información y Comunicaciones');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(11, 'Actividades Financieras y de Seguros');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(12, 'Actividades inmobiliarias');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(13, 'Actividades Profesionales, Cientificas y Técnicas');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(14, 'Actividades de Servicios Administrativos y de Apoyo');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(15, 'Adm. Pública y Defensa; Planes de Seguridad Social de Afiliación Obligatoria');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(16, 'Enseñanza');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(17, 'Actividades de Atención de la Salud Humana y de Asistencia Social');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(18, 'Actividades Artísticas, de Entretenimiento y Recreativas');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(19, 'Otras Actividades de Servicios');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(20, 'Actividades de los Hogaes como Empleadores; Actividades No Diferenciadas de los Hogares');
+INSERT INTO `accsin-dev`.business_user
+(id, name)
+VALUES(21, 'Actividades de Organizaciones y Órganos Extraterritoriales');
