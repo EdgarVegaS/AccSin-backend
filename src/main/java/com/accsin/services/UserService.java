@@ -2,21 +2,17 @@ package com.accsin.services;
 
 import static com.accsin.utils.DateTimeUtils.parseStringToDate;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 import java.util.UUID;
 
 import com.accsin.entities.UserEntity;
 import com.accsin.entities.recoveryPasswordEntity;
 import com.accsin.exeptions.ExistEmailExeption;
 import com.accsin.models.shared.dto.UserDto;
+import com.accsin.repositories.BusinessUserRepository;
+import com.accsin.repositories.PositionRepository;
 import com.accsin.repositories.RoleRepository;
 import com.accsin.repositories.UserRepository;
 import com.accsin.repositories.recoveryPasswordRepository;
@@ -27,7 +23,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,6 +34,12 @@ public class UserService implements UserServiceInterface {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BusinessUserRepository businessUserRepository;
+
+    @Autowired
+    PositionRepository positionRepository;
     
     @Autowired
     recoveryPasswordRepository recoveryPasswordRepository;
@@ -69,12 +70,12 @@ public class UserService implements UserServiceInterface {
         userEntity.setRole(roleRepository.findByName(user.getRole().getName()));
         userEntity.setCreateAt(new Date());
         userEntity.setBirthDate(parseStringToDate(user.getBirthDate()));
-        userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : user.getBusinessUser());
+        userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : businessUserRepository.findById(Long.parseLong(user.getBusinessUser())).get());
         userEntity.setEmail(user.getEmail());
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setParticularCondition((user.getParticularCondition() == null)? null:  user.getParticularCondition());
-        userEntity.setPosition((user.getPosition() == null) ? null : user.getPosition());
+        userEntity.setPosition((user.getPosition() == null) ? null : positionRepository.findById(Long.parseLong(user.getPosition())).get());
         userEntity.setRut(user.getRut());
     
         UserEntity storedUserDetails = userRepository.save(userEntity);
@@ -121,12 +122,12 @@ public class UserService implements UserServiceInterface {
         userEntity.setRut(user.getRut());
         userEntity.setEmail(user.getEmail());
         userEntity.setBirthDate(parseStringToDate(user.getBirthDate()));
-        userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : user.getBusinessUser());
+        //userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : user.getBusinessUser());
         userEntity.setEmail(user.getEmail());
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setParticularCondition((user.getParticularCondition() == null)? null:  user.getParticularCondition());
-        userEntity.setPosition((user.getPosition() == null) ? null : user.getPosition());
+        //userEntity.setPosition((user.getPosition() == null) ? null : user.getPosition());
         userEntity.setRut(user.getRut());
         userRepository.save(userEntity);
         return user;
