@@ -11,6 +11,7 @@ import com.accsin.entities.ContractTypeEntity;
 import com.accsin.entities.UserEntity;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
+import com.accsin.models.shared.dto.ContractTypeDto;
 import com.accsin.repositories.ContractRepository;
 import com.accsin.repositories.ContractTypeRepository;
 import com.accsin.repositories.UserRepository;
@@ -45,8 +46,7 @@ public class ContractService implements ContractServiceInterface {
     public ContractDto createContract(ContractCreateDto contract) {
 
         ContractTypeEntity typeEntity = contractTypeRepository.findByName(contract.getContractType());
-        UserEntity userEntity = userRepository.findByEmail(contract.getUserEmail());
-
+        UserEntity userEntity = userRepository.findByUserId(contract.getContractorCompany());
         ContractEntity entity = new ContractEntity();
         entity.setRequiredCheckList(contract.isRequiredCheckList());
         entity.setActive(contract.isActive());
@@ -73,7 +73,7 @@ public class ContractService implements ContractServiceInterface {
     @Override
     public ContractDto updateContract(ContractCreateDto contract,String contractId) {
         ContractTypeEntity typeEntity = contractTypeRepository.findByName(contract.getContractType());
-        UserEntity userEntity = userRepository.findByEmail(contract.getUserEmail());
+        UserEntity userEntity = userRepository.findByEmail("");
 
         ContractEntity entity = contractRepository.findByContractId(contractId);
         entity.setRequiredCheckList(contract.isRequiredCheckList());
@@ -110,6 +110,13 @@ public class ContractService implements ContractServiceInterface {
         List<ContractEntity> listContracts = contractRepository.findByUserId(userEntity.getId());
         listContracts.forEach(c -> listDto.add(mapper.map(c, ContractDto.class)));
         return listDto;
+    }
+    @Override
+    public List<ContractTypeDto> getContractTypes(){
+    	List<ContractTypeDto> listDto = new ArrayList<>();
+    	Iterable<ContractTypeEntity> contractsTypes = contractTypeRepository.findAll();
+    	contractsTypes.forEach(c -> listDto.add(mapper.map(c, ContractTypeDto.class)));
+    	return listDto;
     }
     
 }
