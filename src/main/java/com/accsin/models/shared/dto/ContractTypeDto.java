@@ -9,4 +9,5 @@ public class ContractTypeDto {
     
     private String ContractTypeId;
     private String name;
+    private String price;
 }

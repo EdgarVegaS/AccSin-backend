@@ -7,6 +7,7 @@ import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.OutMessage.MessageTipe;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
+import com.accsin.models.shared.dto.ContractTypeDto;
 import com.accsin.services.interfaces.ContractServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -31,13 +32,26 @@ public class ContractController {
     @Autowired
     ModelMapper mapper;
 
-    @PostMapping
+    @PostMapping("/createContract")
     public ResponseEntity<Object> createContract(@RequestBody CreateContractRequest request){
+    	OutMessage response = new OutMessage();
+    	try {
+        	ContractCreateDto dto = mapper.map(request,ContractCreateDto.class);
+        	contractService.createContract(dto);
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Contrato Creado Exitosamente");
+			response.setDetail("El contrato ya está disponible en sistema para su uso");
+        	return ResponseEntity.ok().body(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error creando el contrato");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
         
-        ContractCreateDto dto = mapper.map(request,ContractCreateDto.class);
-        ContractDto respose = contractService.createContract(dto);
-
-        return ResponseEntity.ok().body(respose);
     }
 
     @PutMapping
@@ -67,5 +81,9 @@ public class ContractController {
     public ResponseEntity<Object> getAllContracts(){
         List<ContractDto> listDto = contractService.getAllContracts();
         return ResponseEntity.ok().body(listDto);
+    }
+    @GetMapping("/getContractTypes") ResponseEntity<Object> getContractTypes(){
+    	List<ContractTypeDto> listDto = contractService.getContractTypes();
+    	return ResponseEntity.ok().body(listDto);
     }
 }

@@ -11,14 +11,11 @@ import lombok.Setter;
 @Setter
 public class ContractCreateDto {
 
-    private String contractId;
     private String contractorCompany;
     private boolean requiredCheckList;
     private Double basePrice;
     private Double finalPrice;
     private boolean active;
-    private Date createAt;
-    private String userEmail;
     private String contractType;
     private List<ServiceCreateDto> services = new ArrayList<>();
     private CreateCheckListDto checkList;
