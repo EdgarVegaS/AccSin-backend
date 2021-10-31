@@ -1,6 +1,5 @@
 package com.accsin.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,25 +13,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "contract_type")
-public class ContractTypeEntity {
+@Entity(name = "business_user")
+public class BusinessUserEntity {
     
     @Id
     @GeneratedValue
     private long id;
 
     @Column(nullable = false)
-    private String contractTypeId;
-
-    @Column(nullable = false)
     private String name;
-    
-    @Column(nullable = false)
-    private Double price;
 
-    @Column(nullable = false)
-    private double price;
-
-    @OneToMany(mappedBy = "contractType")
-    private List<ContractEntity> contracts = new ArrayList<>() ;
+    @OneToMany(mappedBy = "businessUser")
+    private List<UserEntity> users;
 }
