@@ -18,6 +18,6 @@ public class CreateContractRequest {
     private boolean active;
     private String userEmail;
     private String contractType;
-    private List<ServiceCreateRequestModel> services = new ArrayList<>();
+    private List<ServiceInsideContractModel> services = new ArrayList<>();
     private CheckListRequest checkList;
 }

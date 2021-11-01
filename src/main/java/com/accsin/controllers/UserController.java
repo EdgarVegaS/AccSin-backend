@@ -11,6 +11,7 @@ import com.accsin.models.request.UserDetailRequestModel;
 import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.UserLoginResponse;
 import com.accsin.models.responses.UserResponse;
+import com.accsin.models.shared.dto.BusinessUserDto;
 import com.accsin.models.shared.dto.RoleDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.services.ServiceService;
@@ -97,6 +98,20 @@ public class UserController {
 			return ResponseEntity.ok().body(response);
 		}
 		return ResponseEntity.ok().body(responseList);
+	}
+	
+	@GetMapping("/getBusinessUsers")
+	public ResponseEntity<Object> getBusinessUser(){
+			try {
+			List<BusinessUserDto> userDto = userService.getBusinessUser();
+			return ResponseEntity.ok().body(userDto);
+		} catch (Exception e) {
+			OutMessage response = new OutMessage();
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Obtener Lista de clientes");
+			response.setDetail("Error al obtener lista de clientes");
+			return ResponseEntity.ok().body(response);
+		}
 	}
 
 	@GetMapping("/get-professionals")
