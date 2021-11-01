@@ -26,10 +26,10 @@ public class ContractTypeEntity {
 
     @Column(nullable = false)
     private String name;
-    
+   
     @Column(nullable = false)
     private Double price;
-
+  
     @OneToMany(mappedBy = "contractType")
     private List<ContractEntity> contracts = new ArrayList<>() ;
 }

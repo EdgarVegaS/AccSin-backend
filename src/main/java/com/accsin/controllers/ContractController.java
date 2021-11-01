@@ -99,4 +99,8 @@ public class ContractController {
     	List<ContractTypeDto> listDto = contractService.getContractTypes();
     	return ResponseEntity.ok().body(listDto);
     }
+    @GetMapping("/getContractTypes") ResponseEntity<Object> getContractTypes(){
+    	List<ContractTypeDto> listDto = contractService.getContractTypes();
+    	return ResponseEntity.ok().body(listDto);
+    }
 }
