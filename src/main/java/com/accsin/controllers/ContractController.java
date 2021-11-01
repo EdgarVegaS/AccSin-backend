@@ -77,10 +77,23 @@ public class ContractController {
         return ResponseEntity.ok().body(listDto);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<Object> getAllContracts(){
-        List<ContractDto> listDto = contractService.getAllContracts();
-        return ResponseEntity.ok().body(listDto);
+    	OutMessage response = new OutMessage();
+    	try {
+    		List<ContractDto> listDto = contractService.getAllContracts();
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+    		return ResponseEntity.ok().body(listDto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Obteniendo los Contratos");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
     }
     @GetMapping("/getContractTypes") ResponseEntity<Object> getContractTypes(){
     	List<ContractTypeDto> listDto = contractService.getContractTypes();

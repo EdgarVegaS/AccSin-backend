@@ -12,5 +12,5 @@ public class ServiceCreateRequestModel {
     private Integer duration;
     private Double unitPrice;
     private Double contractPrice;
-    private String contractId;
+    private Integer quantity;
 }
