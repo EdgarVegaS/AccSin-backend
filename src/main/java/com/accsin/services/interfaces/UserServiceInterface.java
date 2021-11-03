@@ -3,6 +3,7 @@ package com.accsin.services.interfaces;
 import java.util.Date;
 import java.util.List;
 
+import com.accsin.models.shared.dto.BusinessUserDto;
 import com.accsin.models.shared.dto.UserDto;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,4 +19,5 @@ public interface UserServiceInterface extends UserDetailsService {
     public List<UserDto> getUsersByRole(int role);
 	boolean sentEmailRecovery(String email) throws Exception;
 	boolean validateCode(String email, String code);
+	List<BusinessUserDto> getBusinessUser();
 }

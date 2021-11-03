@@ -1,6 +1,8 @@
 package com.accsin.models.request;
 
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +18,6 @@ public class CreateContractRequest {
     private boolean active;
     private String userEmail;
     private String contractType;
+    private List<ServiceInsideContractModel> services = new ArrayList<>();
     private CheckListRequest checkList;
 }

@@ -7,9 +7,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.accsin.entities.BusinessUserEntity;
 import com.accsin.entities.UserEntity;
 import com.accsin.entities.recoveryPasswordEntity;
 import com.accsin.exeptions.ExistEmailExeption;
+import com.accsin.models.shared.dto.BusinessUserDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.repositories.BusinessUserRepository;
 import com.accsin.repositories.PositionRepository;
@@ -160,6 +162,16 @@ public class UserService implements UserServiceInterface {
             usersDto.add(mapper.map(u, UserDto.class));
         });
         return usersDto;
+    }
+    
+    @Override
+    public List<BusinessUserDto> getBusinessUser() {
+        List<BusinessUserDto> businessUsersDto = new ArrayList<>();
+        Iterable<BusinessUserEntity> businessUserEntities = businessUserRepository.findAll();
+        		businessUserEntities.forEach(u ->{
+        			businessUsersDto.add(mapper.map(u, BusinessUserDto.class));
+        });
+        return businessUsersDto;
     }
 
     @Override
