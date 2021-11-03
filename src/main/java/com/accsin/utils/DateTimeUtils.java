@@ -29,9 +29,16 @@ public final class DateTimeUtils {
     }
 
     public static String getStringNextMonth(){
-        DateFormat dt = new SimpleDateFormat("MM/yyyy");
+        DateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
         Calendar calendar  = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
+        Date date = calendar.getTime();
+        return dt.format(date);
+    }
+
+    public static String getStringActualDate(){
+        DateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar  = Calendar.getInstance();
         Date date = calendar.getTime();
         return dt.format(date);
     }
@@ -39,6 +46,16 @@ public final class DateTimeUtils {
     public static Date parseStringToDate(String dateString){
         try {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = df.parse(dateString);
+            return date;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Date parseStringToDateTime(String dateString){
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = df.parse(dateString);
             return date;
         } catch (Exception e) {

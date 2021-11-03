@@ -35,6 +35,7 @@ public class UserService implements UserServiceInterface {
     @Autowired
     UserRepository userRepository;
 
+
     @Autowired
     BusinessUserRepository businessUserRepository;
 
@@ -122,12 +123,12 @@ public class UserService implements UserServiceInterface {
         userEntity.setRut(user.getRut());
         userEntity.setEmail(user.getEmail());
         userEntity.setBirthDate(parseStringToDate(user.getBirthDate()));
-        //userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : user.getBusinessUser());
+        userEntity.setBusinessUser((user.getBusinessUser() == null) ? null : businessUserRepository.findById(Long.parseLong(user.getBusinessUser())).get());
         userEntity.setEmail(user.getEmail());
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setParticularCondition((user.getParticularCondition() == null)? null:  user.getParticularCondition());
-        //userEntity.setPosition((user.getPosition() == null) ? null : user.getPosition());
+        userEntity.setPosition((user.getPosition() == null) ? null : positionRepository.findById(Long.parseLong(user.getPosition())).get());
         userEntity.setRut(user.getRut());
         userRepository.save(userEntity);
         return user;

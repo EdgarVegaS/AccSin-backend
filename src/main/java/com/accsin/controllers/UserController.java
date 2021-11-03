@@ -168,6 +168,8 @@ public class UserController {
 			RoleDto roleDto = new RoleDto();
 			roleDto.setName(userDetails.getRole());
 			userDto.setRole(roleDto);
+			userDto.setBusinessUser(userDetails.getBusinessUser());
+			userDto.setPosition(userDetails.getPosition());
             userDto = userService.updateUser(userDto);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
 			response.setMessage("Usuario Actualizado");
