@@ -129,6 +129,7 @@ public class UserService implements UserServiceInterface {
         userEntity.setEmail(user.getEmail());
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
+        userEntity.setRole(roleRepository.findByName(user.getRole().getName()));
         userEntity.setParticularCondition((user.getParticularCondition() == null)? null:  user.getParticularCondition());
         userEntity.setPosition((user.getPosition() == null) ? null : positionRepository.findById(Long.parseLong(user.getPosition())).get());
         userEntity.setRut(user.getRut());
