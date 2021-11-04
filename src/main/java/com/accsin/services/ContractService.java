@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.accsin.entities.CheckListEntity;
 import com.accsin.entities.ContractEntity;
 import com.accsin.entities.ContractTypeEntity;
 import com.accsin.entities.UserEntity;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.ContractTypeDto;
+import com.accsin.repositories.CheckListRepository;
 import com.accsin.repositories.ContractRepository;
 import com.accsin.repositories.ContractTypeRepository;
 import com.accsin.repositories.UserRepository;
@@ -32,6 +34,9 @@ public class ContractService implements ContractServiceInterface {
     
     @Autowired
     CheckListService checkListService;
+    
+    @Autowired
+    CheckListRepository checkListReposirory;
 
     @Autowired
     UserRepository userRepository;
@@ -74,8 +79,8 @@ public class ContractService implements ContractServiceInterface {
     public ContractDto updateContract(ContractCreateDto contract,String contractId) {
         ContractTypeEntity typeEntity = contractTypeRepository.findByName(contract.getContractType());
         UserEntity userEntity = userRepository.findByEmail("");
-
         ContractEntity entity = contractRepository.findByContractId(contractId);
+        CheckListEntity checkListEntity = checkListReposirory.getCheckListbyContractId((int)entity.getId());
         entity.setRequiredCheckList(contract.isRequiredCheckList());
         entity.setActive(contract.isActive());
         entity.setBasePrice(contract.getBasePrice());
@@ -83,6 +88,8 @@ public class ContractService implements ContractServiceInterface {
         entity.setContractorCompany(contract.getContractorCompany());
         entity.setFinalPrice(contract.getFinalPrice());
         entity.setUser(userEntity);
+        checkListEntity.setJsonList(contract.getCheckList().getJsonList());
+        checkListReposirory.save(checkListEntity);
         contractRepository.save(entity);
         return mapper.map(entity, ContractDto.class);
     }
