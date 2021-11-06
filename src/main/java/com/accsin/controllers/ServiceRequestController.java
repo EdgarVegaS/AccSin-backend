@@ -1,6 +1,7 @@
 package com.accsin.controllers;
 
 import com.accsin.models.request.CreateServiceRequestRequest;
+import com.accsin.models.responses.OutMessage;
 import com.accsin.services.interfaces.ServiceRequestServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,18 @@ public class ServiceRequestController {
     
     @PostMapping
     public ResponseEntity<Object> createServiceRequest(@RequestBody CreateServiceRequestRequest request){
+        OutMessage response = new OutMessage();
+        try {
+            serviceRequestService.createServiceRequest(request);
+            response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Solicitud de servicio Creada");
+			response.setDetail("Se ah creado la solicitud de forma exitosa");
+        } catch (Exception e) {
+            response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("ERROR al crear solicitud de servicio");
+			response.setDetail(e.getMessage());
+        }
         
-        serviceRequestService.createServiceRequest(request);
-        return null;
+        return ResponseEntity.ok().body(response);
     }
 }

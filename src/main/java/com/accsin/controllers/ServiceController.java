@@ -53,8 +53,7 @@ public class ServiceController {
 			response.setMessage("Se produjo un error obteniendo la lista de servicios");
 			response.setDetail(e.getMessage());
 			e.printStackTrace();
-			return
-					ResponseEntity.ok().body(response);
+			return ResponseEntity.ok().body(response);
 		}
 
 

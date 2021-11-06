@@ -6,15 +6,14 @@ import static com.accsin.utils.DateTimeUtils.getStringNextMonth;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.accsin.entities.ScheduleEntity;
+import com.accsin.entities.views_entities.AvailableDaysView;
 import com.accsin.entities.views_entities.ScheduleMonthView;
-import com.accsin.models.responses.DatesScheduleResponse;
-import com.accsin.models.responses.ScheduleProfesionalResponse;
+import com.accsin.models.shared.dto.DateAvailableDto;
 import com.accsin.models.shared.dto.ScheduleDto;
+import com.accsin.repositories.AvailableDaysRepository;
 import com.accsin.repositories.ScheduleMonthViewRepository;
 import com.accsin.repositories.ScheduleRepository;
 import com.accsin.repositories.UserRepository;
@@ -30,13 +29,15 @@ public class ScheduleService implements ScheduleServiceInterface {
     private ScheduleRepository scheduleRepository;
     private ModelMapper mapper;
     private ScheduleMonthViewRepository monthViewRepository;
+    private AvailableDaysRepository availableDaysRepository;
 
     public ScheduleService(UserRepository userRepository, ScheduleRepository scheduleRepository, ModelMapper mapper,
-            ScheduleMonthViewRepository monthViewRepository) {
+            ScheduleMonthViewRepository monthViewRepository, AvailableDaysRepository availableDaysRepository) {
         this.userRepository = userRepository;
         this.scheduleRepository = scheduleRepository;
         this.mapper = mapper;
         this.monthViewRepository = monthViewRepository;
+        this.availableDaysRepository = availableDaysRepository;
     }
 
     @Override
@@ -64,30 +65,22 @@ public class ScheduleService implements ScheduleServiceInterface {
     @Override
     public void testView() {
         List<ScheduleMonthView> list = monthViewRepository.getAllRecord();
-        List<ScheduleProfesionalResponse> listResponse = new ArrayList<>();
-        for (ScheduleMonthView smv : list) {
-            Optional<ScheduleProfesionalResponse> spr = listResponse.stream().filter(r -> r.getProfessionalId().equals(smv.getProfessionalId())).findFirst();
-            if (!spr.isEmpty()) {
-                Optional<DatesScheduleResponse> dsr = spr.get().getDates().stream().filter(d -> d.getDate().equals(smv.getScheduleDay())).findFirst();
-                if (!dsr.isEmpty()) {
-                    System.out.println("f");
-                }else{
-                    DatesScheduleResponse dsr1 = new DatesScheduleResponse();
-                    dsr1.setDate(smv.getScheduleDay());
-                    spr.get().getDates().add(dsr1);
-                }
-            }else{
-                ScheduleProfesionalResponse spr1 = new ScheduleProfesionalResponse();
-                spr1.setProfessionalEmail(smv.getProfessionalEmail());
-                spr1.setProfessionalId(smv.getProfessionalId());
-                spr1.setProfessionalName(smv.getProfessionalName()); 
-                DatesScheduleResponse dsr = new DatesScheduleResponse();
-                dsr.setDate(smv.getScheduleDay());
-                spr1.getDates().add(dsr);
-                listResponse.add(spr1);
-            }
-            
-        }
         list.forEach(s -> System.out.println(s));
+    }
+
+    @Override
+    public List<DateAvailableDto> getAvailableDays() {
+        List<DateAvailableDto> listReturn = new ArrayList<>();
+        List<AvailableDaysView> listDays = availableDaysRepository.getAllRecords();
+        for (AvailableDaysView availableDaysView : listDays) {
+            if (availableDaysView.getDatesCount() < availableDaysView.getProfessionalTotal()) {
+                String year = availableDaysView.getDates().substring(0,4);
+                String month = availableDaysView.getDates().substring(5,7);
+                String day = availableDaysView.getDates().substring(8,10);
+                DateAvailableDto dto = DateAvailableDto.builder().day(day).month(month).year(year).build();
+                listReturn.add(dto);
+            }
+        }
+        return listReturn;
     }
 }

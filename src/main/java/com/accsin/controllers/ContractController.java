@@ -1,6 +1,7 @@
 package com.accsin.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.accsin.models.request.CreateContractRequest;
 import com.accsin.models.responses.OutMessage;
@@ -8,6 +9,7 @@ import com.accsin.models.responses.OutMessage.MessageTipe;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.ContractTypeDto;
+import com.accsin.models.shared.dto.PaginationDto;
 import com.accsin.services.interfaces.ContractServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -95,12 +98,30 @@ public class ContractController {
 					ResponseEntity.ok().body(response);
 		}
     }
+
+	@GetMapping("/getAll/pagination")
+    public ResponseEntity<Object> getAllContracts(@RequestParam Optional<String> sortBy,
+													@RequestParam Optional<Integer> page,
+													@RequestParam Optional<Integer> quantity){
+    	OutMessage response = new OutMessage();
+    	try {
+			PaginationDto dto = PaginationDto.builder().sortBy(sortBy).page(page).quantity(quantity).build();
+    		List<ContractDto> listDto = contractService.getContractPagination(dto);
+    		return ResponseEntity.ok().body(listDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Obteniendo los Contratos");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
+    }
+
     @GetMapping("/getContractTypes") ResponseEntity<Object> getContractTypes(){
     	List<ContractTypeDto> listDto = contractService.getContractTypes();
     	return ResponseEntity.ok().body(listDto);
     }
-    @GetMapping("/getContractTypes") ResponseEntity<Object> getContractTypes(){
-    	List<ContractTypeDto> listDto = contractService.getContractTypes();
-    	return ResponseEntity.ok().body(listDto);
-    }
+ 
 }
