@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.accsin.models.request.CreateContractRequest;
+import com.accsin.models.request.UpdateContractRequest;
 import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.OutMessage.MessageTipe;
 import com.accsin.models.shared.dto.ContractCreateDto;
@@ -57,13 +58,28 @@ public class ContractController {
         
     }
 
-    @PutMapping
-    public ResponseEntity<Object> updateContract(@RequestBody CreateContractRequest request){
-        
-        ContractCreateDto dto = mapper.map(request,ContractCreateDto.class);
-        ContractDto respose = contractService.updateContract(dto,request.getContractId());
-
-        return ResponseEntity.ok().body(respose);
+    @PutMapping("/updateContract")
+    public ResponseEntity<Object> updateContract(@RequestBody UpdateContractRequest request){
+    	OutMessage response = new OutMessage();
+    	try {
+    		ContractCreateDto dto = mapper.map(request,ContractCreateDto.class);
+    		if(!request.isFreeChange()) {
+    			//Lógica para cargarle un cobro al cliente
+    		}
+    		contractService.updateContract(dto,request.getContractId());
+    		response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("Contrato Actualizado Exitosamente");
+			response.setDetail("Se ha modificado con éxito el contrato");
+        	return ResponseEntity.ok().body(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error creando el contrato");
+			response.setDetail(e.getMessage());
+			e.printStackTrace();
+			return
+					ResponseEntity.ok().body(response);
+		}
     }
 
     @DeleteMapping("/{id}")
