@@ -7,9 +7,8 @@ import lombok.Setter;
 @Setter
 public class CreateServiceRequestRequest {
 
-    private String clientEmail;
+    private String clientId;
     private String dateSelected;
     private String serviceId;
-    private String professionalId;
     
 }

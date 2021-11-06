@@ -7,7 +7,9 @@ import com.accsin.entities.ScheduleEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ScheduleRepository extends PagingAndSortingRepository<ScheduleEntity, Long> {
     
     @Query(value = "SELECT * FROM schedule s WHERE s.date BETWEEN CAST( :start AS DATE) AND CAST( :end AS DATE)", nativeQuery = true)

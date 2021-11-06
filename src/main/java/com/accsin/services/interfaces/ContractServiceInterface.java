@@ -5,6 +5,7 @@ import java.util.List;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.ContractTypeDto;
+import com.accsin.models.shared.dto.PaginationDto;
 
 public interface ContractServiceInterface {
     
@@ -14,4 +15,5 @@ public interface ContractServiceInterface {
     public List<ContractDto> getAllContracts();
     public List<ContractDto> getContractByUserId(String userId);
 	public List<ContractTypeDto> getContractTypes();
+    public List<ContractDto> getContractPagination(PaginationDto dto);
 }

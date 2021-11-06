@@ -1,6 +1,5 @@
 package com.accsin.models.request;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
