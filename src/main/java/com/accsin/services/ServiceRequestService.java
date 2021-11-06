@@ -1,5 +1,6 @@
 package com.accsin.services;
 
+import java.util.Date;
 import java.util.UUID;
 
 import com.accsin.entities.ScheduleEntity;
@@ -34,12 +35,12 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
 
         ServiceRequestEntity serviceRequestEntity = new ServiceRequestEntity();
         serviceRequestEntity.setServceRequestId(UUID.randomUUID().toString());
-        serviceRequestEntity.setClient(userRepository.findByEmail(request.getClientEmail()));
+        serviceRequestEntity.setClient(userRepository.findByUserId(request.getClientId()));
         serviceRequestEntity.setService(serviceRepository.findByServiceId(request.getServiceId()));
-        ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected(), request.getProfessionalId());
-        serviceRequestEntity.setSchudule(scheduleEntity);
+        serviceRequestEntity.setCreateAt(new Date());
+        //haciendo logica para asignar el professional
+        //ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected(), request.getProfessionalId());
+        //serviceRequestEntity.setSchudule(scheduleEntity);
         serviceRequestRepository.save(serviceRequestEntity);
-
     }
-
 }

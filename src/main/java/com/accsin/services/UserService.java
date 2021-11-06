@@ -108,6 +108,7 @@ public class UserService implements UserServiceInterface {
 
         UserDto userToReturn = new UserDto();
         mapper.map(userEntity, userToReturn);
+        userToReturn.setBusinessUser(userEntity.getBusinessUser() ==  null ? "0" : Long.toString(userEntity.getBusinessUser().getId()));
         userToReturn.setPassword(null);
 
         return userToReturn;

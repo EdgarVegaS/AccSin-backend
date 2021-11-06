@@ -12,6 +12,7 @@ import com.accsin.entities.UserEntity;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.ContractTypeDto;
+import com.accsin.models.shared.dto.PaginationDto;
 import com.accsin.repositories.ContractRepository;
 import com.accsin.repositories.ContractTypeRepository;
 import com.accsin.repositories.UserRepository;
@@ -19,6 +20,8 @@ import com.accsin.services.interfaces.ContractServiceInterface;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -118,5 +121,15 @@ public class ContractService implements ContractServiceInterface {
     	contractsTypes.forEach(c -> listDto.add(mapper.map(c, ContractTypeDto.class)));
     	return listDto;
     }
-    
+
+    @Override
+    public List<ContractDto> getContractPagination(PaginationDto dto) {
+        List<ContractDto> listReturn = new ArrayList<>();
+        Iterable<ContractEntity> listEntities = contractRepository.findAll(PageRequest.of(dto.getPage().orElse(0), dto.getQuantity().orElse(5),Sort.Direction.ASC,dto.getSortBy().orElse("id")));
+        for (ContractEntity contractEntity : listEntities) {
+            listReturn.add(mapper.map(contractEntity,ContractDto.class));
+        }
+        return listReturn;
+    }
+
 }
