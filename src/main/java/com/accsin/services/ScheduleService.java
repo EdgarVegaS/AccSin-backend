@@ -73,7 +73,7 @@ public class ScheduleService implements ScheduleServiceInterface {
         List<DateAvailableDto> listReturn = new ArrayList<>();
         List<AvailableDaysView> listDays = availableDaysRepository.getAllRecords();
         for (AvailableDaysView availableDaysView : listDays) {
-            if (availableDaysView.getDatesCount() < availableDaysView.getProfessionalTotal()) {
+            if (availableDaysView.getDatesCount() >= availableDaysView.getProfessionalTotal()) {
                 String year = availableDaysView.getDates().substring(0,4);
                 String month = availableDaysView.getDates().substring(5,7);
                 String day = availableDaysView.getDates().substring(8,10);
