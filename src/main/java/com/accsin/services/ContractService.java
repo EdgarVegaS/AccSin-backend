@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.accsin.services.CheckListService;
 import com.accsin.entities.CheckListEntity;
 import com.accsin.entities.ContractEntity;
 import com.accsin.entities.ContractTypeEntity;
@@ -14,6 +15,7 @@ import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.ContractTypeDto;
 import com.accsin.models.shared.dto.PaginationDto;
+import com.accsin.repositories.CheckListRepository;
 import com.accsin.repositories.ContractRepository;
 import com.accsin.repositories.ContractTypeRepository;
 import com.accsin.repositories.UserRepository;
