@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.accsin.entities.ScheduleEntity;
 import com.accsin.entities.ServiceRequestEntity;
 import com.accsin.entities.views_entities.ScheduleNextMonthView;
 import com.accsin.models.request.CreateServiceRequestRequest;
@@ -48,9 +49,8 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         serviceRequestEntity.setClient(userRepository.findByUserId(request.getClientId()));
         serviceRequestEntity.setService(serviceRepository.findByServiceId(request.getServiceId()));
         serviceRequestEntity.setCreateAt(new Date());
-        //haciendo logica para asignar el professional
-        //ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected(), request.getProfessionalId());
-        //serviceRequestEntity.setSchudule(scheduleEntity);
+        ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
+        serviceRequestEntity.setSchudule(scheduleEntity);
         serviceRequestRepository.save(serviceRequestEntity);
     }
 
