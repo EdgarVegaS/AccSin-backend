@@ -70,4 +70,9 @@ public final class DateTimeUtils {
         cal.add(Calendar.DATE, days); //minus number would decrement the days
         return cal.getTime();
     }
+
+    public static String getHourString(Date date){
+        DateFormat df = new SimpleDateFormat("HH:mm:ss");
+        return df.format(date);
+    }
 }

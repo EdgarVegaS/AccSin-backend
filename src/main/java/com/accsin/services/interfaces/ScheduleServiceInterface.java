@@ -8,7 +8,7 @@ import com.accsin.models.shared.dto.ScheduleDto;
 
 public interface ScheduleServiceInterface {
     
-    public ScheduleEntity createScheduleForServiceRequest(String date,String professionaId);
+    public ScheduleEntity createScheduleForServiceRequest(String date);
     public List<ScheduleDto> getScheduleNextMonth();
     public List<DateAvailableDto> getAvailableDays();
     public void testView();
