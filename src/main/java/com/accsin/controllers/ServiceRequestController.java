@@ -22,7 +22,7 @@ public class ServiceRequestController {
     @Autowired
     ServiceRequestServiceInterface serviceRequestService;
     
-    @PostMapping
+    @PostMapping("/createServiceRequest")
     public ResponseEntity<Object> createServiceRequest(@RequestBody CreateServiceRequestRequest request){
         OutMessage response = new OutMessage();
         try {
