@@ -75,4 +75,10 @@ public final class DateTimeUtils {
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         return df.format(date);
     }
+
+    public static String getDateFormatFromDate(Date date){
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(date);
+    }
 }
