@@ -12,4 +12,5 @@ public interface ScheduleServiceInterface {
     public List<ScheduleDto> getScheduleNextMonth();
     public List<DateAvailableDto> getAvailableDays();
     public void testView();
+    public void deleteSchedule(long id);
 }

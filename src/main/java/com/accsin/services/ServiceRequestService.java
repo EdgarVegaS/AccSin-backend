@@ -1,5 +1,7 @@
 package com.accsin.services;
 
+import static com.accsin.utils.DateTimeUtils.getDateFormatFromDate;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +11,7 @@ import com.accsin.entities.ScheduleEntity;
 import com.accsin.entities.ServiceRequestEntity;
 import com.accsin.entities.views_entities.ScheduleNextMonthView;
 import com.accsin.models.request.CreateServiceRequestRequest;
+import com.accsin.models.request.UpdateServiceRequest;
 import com.accsin.models.shared.dto.ScheduleNextMonthDto;
 import com.accsin.repositories.ScheduleNextMonthRepository;
 import com.accsin.repositories.ServiceRepository;
@@ -62,5 +65,40 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
             listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
         }
         return listDto;
+    }
+
+    @Override
+    public void deleteServiceRequest(String id) {
+        ServiceRequestEntity entity = serviceRequestRepository.findByServceRequestId(id);
+        serviceRequestRepository.delete(entity);
+        scheduleService.deleteSchedule(entity.getSchudule().getId());
+    }
+
+    @Override
+    public void updateServiceRequest(UpdateServiceRequest request) {
+        
+        ServiceRequestEntity entity = serviceRequestRepository.findByServceRequestId(request.getServiceRequestId());
+
+        boolean sameDate = compareDatesFromRequest(request.getDateSelected(), entity.getSchudule().getDate());
+        if (!sameDate) {
+            ScheduleEntity scheduleOld = entity.getSchudule();
+            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
+            entity.setSchudule(scheduleEntity);
+            entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
+            serviceRequestRepository.save(entity);
+            scheduleService.deleteSchedule(scheduleOld.getId());
+        }else{
+            entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
+            serviceRequestRepository.save(entity);
+        }
+    }
+
+    private boolean compareDatesFromRequest(String dateRequest, Date dateSchedule){
+
+        String dateScheduleString = getDateFormatFromDate(dateSchedule);
+        if (dateRequest.equals(dateScheduleString)) {
+            return true;
+        }
+        return false;
     }
 }
