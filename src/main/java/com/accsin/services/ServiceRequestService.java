@@ -88,6 +88,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
             serviceRequestRepository.save(entity);
             scheduleService.deleteSchedule(scheduleOld.getId());
         }else{
+            entity.setCompleted(request.isConpleted());
             entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
             serviceRequestRepository.save(entity);
         }
@@ -100,5 +101,15 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<ScheduleNextMonthDto> getNextMonthServicesByUser(String userId) {
+        List<ScheduleNextMonthDto> listDto = new ArrayList<>();
+        List<ScheduleNextMonthView> listEntities = nextMonthRepository.getByUser(userId);
+        for (ScheduleNextMonthView scheduleNextMonthView : listEntities) {
+            listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
+        }
+        return listDto;
     }
 }

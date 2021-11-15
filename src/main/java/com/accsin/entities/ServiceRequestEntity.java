@@ -27,6 +27,9 @@ public class ServiceRequestEntity {
     @Column(nullable = false)
     private String servceRequestId;
 
+    @Column
+    private boolean isCompleted;
+
     @CreatedDate
     private Date createAt;
 

@@ -41,5 +41,13 @@ public class CheckListService implements CheckListServiceInterface {
         return mapper.map(checkListCreated, CheckListDto.class);
 
     }
+
+    @Override
+    public CheckListDto getCheckListByUser(String userId) {
+        
+        CheckListEntity checkListEntity = checkListRepository.getCheckListByUser(userId);
+
+        return mapper.map(checkListEntity,CheckListDto.class);
+    }
     
 }
