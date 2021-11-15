@@ -12,5 +12,6 @@ public interface ServiceRequestServiceInterface {
     public void updateServiceRequest(UpdateServiceRequest request);
     public List<ScheduleNextMonthDto> getNextMonthServices();
     public void deleteServiceRequest(String id);
+    public List<ScheduleNextMonthDto> getNextMonthServicesByUser(String userId);
 
 }

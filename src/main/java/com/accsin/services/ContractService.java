@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.accsin.services.CheckListService;
 import com.accsin.entities.CheckListEntity;
 import com.accsin.entities.ContractEntity;
 import com.accsin.entities.ContractTypeEntity;

@@ -50,4 +50,7 @@ public class ScheduleNextMonthView {
     @Column(name = "name_service")
     private String nameService;
 
+    @Column(name = "is_completed")
+    private boolean isCompleted;
+
 }

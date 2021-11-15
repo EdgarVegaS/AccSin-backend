@@ -1,6 +1,5 @@
 package com.accsin.services.interfaces;
 
-import java.util.Date;
 import java.util.List;
 
 import com.accsin.models.shared.dto.BusinessUserDto;

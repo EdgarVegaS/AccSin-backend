@@ -90,4 +90,18 @@ public class ServiceRequestController {
         }
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getServicesByUserId(@PathVariable String id){
+        OutMessage response = new OutMessage();
+        try {
+            List<ScheduleNextMonthDto> listDto = serviceRequestService.getNextMonthServicesByUser(id);
+            return ResponseEntity.ok().body(listDto);
+        } catch (Exception e) {
+            response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Error al obtener listado de servicios");
+			response.setDetail(e.getMessage());
+        }
+        return ResponseEntity.ok().body(response);
+    }
 }
