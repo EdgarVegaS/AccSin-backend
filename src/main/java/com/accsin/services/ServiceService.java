@@ -42,7 +42,6 @@ public class ServiceService implements ServiceServiceInterface {
     @Override
     public ServiceDto createService(ServiceCreateDto service) {
 
-        ContractEntity contractEntity = contractRepository.findByContractId(service.getContractId());
         ServiceEntity serviceEntity = new ServiceEntity();
         serviceEntity.setEnable(service.isEnable());
         serviceEntity.setServiceId(UUID.randomUUID().toString());
@@ -51,7 +50,6 @@ public class ServiceService implements ServiceServiceInterface {
         serviceEntity.setDuration(service.getDuration());
         serviceEntity.setName(service.getName());
         serviceEntity.setUnitPrice(service.getUnitPrice());
-        //serviceEntity.setContract(contractEntity);
         ServiceEntity entityResponse = serviceRepository.save(serviceEntity);
         ServiceDto serviceDto = mapper.map(entityResponse, ServiceDto.class);
         return serviceDto;

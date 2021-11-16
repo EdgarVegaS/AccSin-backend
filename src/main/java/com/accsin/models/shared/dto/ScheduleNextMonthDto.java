@@ -19,4 +19,5 @@ public class ScheduleNextMonthDto {
     private String profesionalName;
     private String serviceId;
     private String nameService;
+    private boolean isCompleted;
 }

@@ -7,7 +7,6 @@ import com.accsin.models.request.ServiceCreateRequestModel;
 import com.accsin.models.request.ServiceUpdateRequestModel;
 import com.accsin.models.responses.OperationStatusModel;
 import com.accsin.models.responses.OutMessage;
-import com.accsin.models.responses.ServiceResponse;
 import com.accsin.models.shared.dto.ServiceCreateDto;
 import com.accsin.models.shared.dto.ServiceDto;
 import com.accsin.services.interfaces.ServiceServiceInterface;
@@ -65,7 +64,7 @@ public class ServiceController {
     	OutMessage response = new OutMessage();
     	try {
             ServiceCreateDto serviceCreateDto = mapper.map(request, ServiceCreateDto.class);
-            ServiceDto serviceDto = serviceService.createService(serviceCreateDto);
+            serviceService.createService(serviceCreateDto);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
 			response.setMessage("Servicio Creado");
 			response.setDetail("Se ha creado el servicio Exitosamente");

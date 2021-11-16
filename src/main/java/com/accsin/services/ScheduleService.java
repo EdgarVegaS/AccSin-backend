@@ -52,11 +52,10 @@ public class ScheduleService implements ScheduleServiceInterface {
     @Override
     public ScheduleEntity createScheduleForServiceRequest(String date) {
 
-        String profesionalId =findProfessional(date);
+        String profesionalId = findProfessional(date);
         UserEntity userEntity = userRepository.findByUserId(profesionalId);
         String dateHours = getHoursAssigned(userEntity.getId(),date);
         
-
         ScheduleEntity entity = new ScheduleEntity();
         entity.setScheduleId(UUID.randomUUID().toString());
         entity.setDate(parseStringToDateTime(dateHours));
@@ -154,5 +153,13 @@ public class ScheduleService implements ScheduleServiceInterface {
         } else{
             return date + " " + "15:00:00";
         }
+    }
+
+    @Override
+    public void deleteSchedule(long id) {
+
+        ScheduleEntity entity = scheduleRepository.findById(id).get();
+        scheduleRepository.delete(entity);
+        
     }
 }

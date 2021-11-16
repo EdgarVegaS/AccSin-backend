@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "schedule_next_month")
-public class ScheduleNextMonthView {
+public class ScheduleServiceRequestView {
 
     @Id
     @Column(name = "id")
@@ -49,5 +49,8 @@ public class ScheduleNextMonthView {
 
     @Column(name = "name_service")
     private String nameService;
+
+    @Column(name = "is_completed")
+    private boolean isCompleted;
 
 }
