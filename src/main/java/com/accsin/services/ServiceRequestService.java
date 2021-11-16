@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import com.accsin.entities.ScheduleEntity;
 import com.accsin.entities.ServiceRequestEntity;
-import com.accsin.entities.views_entities.ScheduleNextMonthView;
+import com.accsin.entities.views_entities.ScheduleServiceRequestView;
 import com.accsin.models.request.CreateServiceRequestRequest;
 import com.accsin.models.request.UpdateServiceRequest;
 import com.accsin.models.shared.dto.ScheduleNextMonthDto;
@@ -60,8 +60,8 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     @Override
     public List<ScheduleNextMonthDto> getNextMonthServices() {
         List<ScheduleNextMonthDto> listDto = new ArrayList<>();
-        List<ScheduleNextMonthView> listEntities = nextMonthRepository.getAll();
-        for (ScheduleNextMonthView scheduleNextMonthView : listEntities) {
+        List<ScheduleServiceRequestView> listEntities = nextMonthRepository.getAll();
+        for (ScheduleServiceRequestView scheduleNextMonthView : listEntities) {
             listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
         }
         return listDto;
@@ -104,10 +104,66 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     }
 
     @Override
-    public List<ScheduleNextMonthDto> getNextMonthServicesByUser(String userId) {
+    public List<ScheduleNextMonthDto> getNextMonthServicesByUser(String userId,String type) {
         List<ScheduleNextMonthDto> listDto = new ArrayList<>();
-        List<ScheduleNextMonthView> listEntities = nextMonthRepository.getByUser(userId);
-        for (ScheduleNextMonthView scheduleNextMonthView : listEntities) {
+        List<ScheduleServiceRequestView> listEntities = new ArrayList<>();
+        if (type.equalsIgnoreCase("user")) {
+            listEntities = nextMonthRepository.getByUser(userId);
+        }else{
+            listEntities = nextMonthRepository.getByProfessional(userId);
+        }
+        
+        for (ScheduleServiceRequestView scheduleNextMonthView : listEntities) {
+            listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
+        }
+        return listDto;
+    }
+
+    @Override
+    public List<ScheduleNextMonthDto> getDailyServicesByUser(String userId,String type) {
+        List<ScheduleNextMonthDto> listDto = new ArrayList<>();
+
+        List<ScheduleServiceRequestView> listEntities = new ArrayList<>();
+        if (type.equalsIgnoreCase("user")) {
+            listEntities = nextMonthRepository.getDailyByUser(userId);
+        }else{
+            listEntities = nextMonthRepository.getDailyByProfessional(userId);
+        }
+        for (ScheduleServiceRequestView scheduleNextMonthView : listEntities) {
+            listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
+        }
+        return listDto;
+    }
+
+    @Override
+    public List<ScheduleNextMonthDto> getDateServicesByUser(String userId, String date,String type) {
+        
+        List<ScheduleNextMonthDto> listDto = new ArrayList<>();
+        List<ScheduleServiceRequestView> listEntities = new ArrayList<>();
+        if (type.equalsIgnoreCase("user")) {
+            listEntities = nextMonthRepository.getDateByUser(userId,date);
+        }else{
+            listEntities = nextMonthRepository.getDateByProfessional(userId,date);
+        }
+        //List<ScheduleServiceRequestView> listEntities = nextMonthRepository.getDateByUser(userId,date);
+        for (ScheduleServiceRequestView scheduleNextMonthView : listEntities) {
+            listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
+        }
+        return listDto;
+    }
+
+    @Override
+    public List<ScheduleNextMonthDto> getBetweenDateServicesByUser(String userId, String dateStart,String dateFinish,String type) {
+        
+        List<ScheduleNextMonthDto> listDto = new ArrayList<>();
+        List<ScheduleServiceRequestView> listEntities = new ArrayList<>();
+        if (type.equalsIgnoreCase("user")) {
+            listEntities = nextMonthRepository.getBetweenDateByUser(userId,dateStart,dateFinish);
+        }else{
+            listEntities = nextMonthRepository.getBetweenDateByProfessional(userId,dateStart,dateFinish);
+        }
+        //List<ScheduleServiceRequestView> listEntities = nextMonthRepository.getBetweenDateByUser(userId,dateStart,dateFinish);
+        for (ScheduleServiceRequestView scheduleNextMonthView : listEntities) {
             listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
         }
         return listDto;
