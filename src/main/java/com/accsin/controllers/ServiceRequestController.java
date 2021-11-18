@@ -28,7 +28,7 @@ public class ServiceRequestController {
     @Autowired
     ServiceRequestServiceInterface serviceRequestService;
 
-    @PostMapping
+    @PostMapping("/createServiceRequest")
     public ResponseEntity<Object> createServiceRequest(@RequestBody CreateServiceRequestRequest request) {
         OutMessage response = new OutMessage();
         try {
@@ -55,8 +55,9 @@ public class ServiceRequestController {
             response.setDetail("Se ha cancelado la solicitud de manera exitosa");
 
         } catch (Exception e) {
+        	e.printStackTrace();
             response.setMessageTipe(OutMessage.MessageTipe.ERROR);
-            response.setMessage("ERROR al cancelado solicitud de servicio");
+            response.setMessage("ERROR cancelando la solicitud de servicio");
             response.setDetail(e.getMessage());
         }
         return ResponseEntity.ok().body(response);
@@ -79,12 +80,13 @@ public class ServiceRequestController {
     }
 
     @GetMapping("/schedule-next-month")
-    public ResponseEntity<Object> getServiceRequestNextMonth() {
+    public ResponseEntity<Object> getServiceRequestNextMonth(@RequestParam String date) {
         OutMessage response = new OutMessage();
         try {
-            List<ScheduleNextMonthDto> listDto = serviceRequestService.getNextMonthServices();
+            List<ScheduleNextMonthDto> listDto = serviceRequestService.getNextMonthServices(date);
             return ResponseEntity.ok().body(listDto);
         } catch (Exception e) {
+        	e.printStackTrace();
             response.setMessageTipe(OutMessage.MessageTipe.ERROR);
             response.setMessage("Error al obtener listado de servicios");
             response.setDetail(e.getMessage());

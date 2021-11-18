@@ -58,9 +58,9 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     }
 
     @Override
-    public List<ScheduleNextMonthDto> getNextMonthServices() {
+    public List<ScheduleNextMonthDto> getNextMonthServices(String date) {
         List<ScheduleNextMonthDto> listDto = new ArrayList<>();
-        List<ScheduleServiceRequestView> listEntities = nextMonthRepository.getAll();
+        List<ScheduleServiceRequestView> listEntities = nextMonthRepository.getAll(date);
         for (ScheduleServiceRequestView scheduleNextMonthView : listEntities) {
             listDto.add(mapper.map(scheduleNextMonthView, ScheduleNextMonthDto.class));
         }
