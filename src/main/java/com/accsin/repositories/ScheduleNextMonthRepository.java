@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface ScheduleNextMonthRepository extends PagingAndSortingRepository<ScheduleServiceRequestView,Long> {    
     
-    @Query(nativeQuery = true, value = "select * from schedule_next_month")
-    List<ScheduleServiceRequestView> getAll();
+    @Query(nativeQuery = true, value = "select * from schedule_next_month WHERE service_date > :date")
+    List<ScheduleServiceRequestView> getAll(@Param("date") String date);
 
     @Query(nativeQuery = true, value = "select * from schedule_next_month where user_id = :id")
     List<ScheduleServiceRequestView> getByUser(@Param("id") String id);

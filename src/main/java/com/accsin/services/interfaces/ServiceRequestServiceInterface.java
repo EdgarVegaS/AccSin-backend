@@ -10,7 +10,7 @@ public interface ServiceRequestServiceInterface {
     
     public void createServiceRequest(CreateServiceRequestRequest request);
     public void updateServiceRequest(UpdateServiceRequest request);
-    public List<ScheduleNextMonthDto> getNextMonthServices();
+    public List<ScheduleNextMonthDto> getNextMonthServices(String date);
     public void deleteServiceRequest(String id);
     public List<ScheduleNextMonthDto> getNextMonthServicesByUser(String userId,String type);
     public List<ScheduleNextMonthDto> getDailyServicesByUser(String userId,String type);
