@@ -29,6 +29,12 @@ public class ServiceRequestEntity {
 
     @Column
     private boolean isCompleted;
+    
+    @Column 
+    private boolean checkListCompleted;
+    
+    @Column
+    private String observations;
 
     @CreatedDate
     private Date createAt;
