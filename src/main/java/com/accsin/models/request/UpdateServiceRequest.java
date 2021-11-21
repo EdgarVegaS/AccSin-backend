@@ -10,7 +10,7 @@ public class UpdateServiceRequest {
     private String serviceRequestId;
     private String dateSelected;
     private String serviceId;
-    private boolean conpleted;
+    private boolean completed;
     private boolean checkListCompleted;
     private String observations;
     

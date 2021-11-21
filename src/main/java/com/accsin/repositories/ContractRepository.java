@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface ContractRepository extends PagingAndSortingRepository<ContractEntity, Long>{
     
     ContractEntity findByContractId(String contractId);
-    @Query(nativeQuery = true, value = "select * from contract where contractor_company = :userId AND active = true limit 1")
+    @Query(value = "select * from contract where user_id = :userId AND active = true limit 1",nativeQuery = true)
     List<ContractEntity> findByUserId(long userId);
 }

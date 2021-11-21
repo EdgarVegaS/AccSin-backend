@@ -48,7 +48,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     public void createServiceRequest(CreateServiceRequestRequest request) {
 
         ServiceRequestEntity serviceRequestEntity = new ServiceRequestEntity();
-        serviceRequestEntity.setServceRequestId(UUID.randomUUID().toString());
+        serviceRequestEntity.setServiceRequestId(UUID.randomUUID().toString());
         serviceRequestEntity.setClient(userRepository.findByUserId(request.getClientId()));
         serviceRequestEntity.setService(serviceRepository.findByServiceId(request.getServiceId()));
         serviceRequestEntity.setCreateAt(new Date());
@@ -69,7 +69,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
 
     @Override
     public void deleteServiceRequest(String id) {
-        ServiceRequestEntity entity = serviceRequestRepository.findByServceRequestId(id);
+        ServiceRequestEntity entity = serviceRequestRepository.findByServiceRequestId(id);
         serviceRequestRepository.delete(entity);
         scheduleService.deleteSchedule(entity.getSchudule().getId());
     }
@@ -77,7 +77,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     @Override
     public void updateServiceRequest(UpdateServiceRequest request) {
         
-        ServiceRequestEntity entity = serviceRequestRepository.findByServceRequestId(request.getServiceRequestId());
+        ServiceRequestEntity entity = serviceRequestRepository.findByServiceRequestId(request.getServiceRequestId());
 
         boolean sameDate = compareDatesFromRequest(request.getDateSelected(), entity.getSchudule().getDate());
         if (!sameDate) {
@@ -88,7 +88,9 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
             serviceRequestRepository.save(entity);
             scheduleService.deleteSchedule(scheduleOld.getId());
         }else{
-            entity.setCompleted(request.isConpleted());
+            entity.setCompleted(request.isCompleted());
+            entity.setObservations(request.getObservations());
+            entity.setCheckListCompleted(request.isCheckListCompleted());
             entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
             serviceRequestRepository.save(entity);
         }
