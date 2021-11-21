@@ -53,4 +53,7 @@ public class ScheduleServiceRequestView {
     @Column(name = "completed")
     private boolean completed;
 
+    @Column(name = "observations")
+    private String observations;
+
 }

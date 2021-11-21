@@ -20,4 +20,5 @@ public class ScheduleNextMonthDto {
     private String serviceId;
     private String nameService;
     private boolean isCompleted;
+    private String observations;
 }

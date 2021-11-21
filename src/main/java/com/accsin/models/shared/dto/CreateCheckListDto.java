@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CreateCheckListDto {
 
+    private String checkListId;
     private String contractId;
     private String jsonList;
     private String jsonMejoras;

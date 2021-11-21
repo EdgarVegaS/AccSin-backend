@@ -7,4 +7,5 @@ public interface CheckListServiceInterface {
     
     public CheckListDto createCheckList(CreateCheckListDto checklist);
     public CheckListDto getCheckListByUser(String userId);
+
 }

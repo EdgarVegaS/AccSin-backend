@@ -16,5 +16,7 @@ public interface CheckListRepository extends CrudRepository<CheckListEntity,Long
 
     @Query(nativeQuery = true, value = "SELECT cl.* FROM check_list cl LEFT JOIN contract c ON c.id = cl.contract_id LEFT JOIN `user` u ON u.id = c.user_id WHERE u.user_id = :user_id")
     CheckListEntity getCheckListByUser(@Param("user_id") String userId);
+
+    CheckListEntity findByCheckListId(String checkListId);
     
 }

@@ -36,4 +36,7 @@ public interface ScheduleNextMonthRepository extends PagingAndSortingRepository<
 
     @Query(nativeQuery = true, value = "select * from schedule_next_month where professional_id = :id and DATE_FORMAT(service_date, '%Y-%m-%d') between :date_start and :date_finish")
     List<ScheduleServiceRequestView> getBetweenDateByProfessional(@Param("id") String id, @Param("date_start") String dateStart,@Param("date_finish") String datefinish);
+
+    @Query(nativeQuery = true, value = "select * from schedule_next_month where service_request_id = :id")
+    ScheduleServiceRequestView getByServiceRequestId(@Param("id") String id);
 }

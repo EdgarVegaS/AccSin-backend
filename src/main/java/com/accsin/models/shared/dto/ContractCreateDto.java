@@ -18,4 +18,5 @@ public class ContractCreateDto {
     private String contractType;
     private List<ServiceCreateDto> services = new ArrayList<>();
     private CreateCheckListDto checkList;
+    private boolean freeChange;
 }
