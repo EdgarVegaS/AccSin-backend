@@ -9,7 +9,7 @@ import com.accsin.models.shared.dto.PaginationDto;
 
 public interface ContractServiceInterface {
     
-    public ContractDto createContract(ContractCreateDto contract);
+    public ContractDto createContract(ContractCreateDto contract) throws Exception;
     public ContractDto updateContract(ContractCreateDto contract,String contractId);
     public void deleteContract(String id);
     public List<ContractDto> getAllContracts();

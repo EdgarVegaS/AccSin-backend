@@ -51,10 +51,14 @@ public class ContractService implements ContractServiceInterface {
     ModelMapper mapper;
 
     @Override
-    public ContractDto createContract(ContractCreateDto contract) {
-
+    public ContractDto createContract(ContractCreateDto contract) throws Exception {
         ContractTypeEntity typeEntity = contractTypeRepository.findByName(contract.getContractType());
         UserEntity userEntity = userRepository.findByUserId(contract.getContractorCompany());
+        
+        boolean existPreviusContract = contractRepository.findByUserId(userEntity.getId()).isEmpty();
+        if(!existPreviusContract) {
+        	 throw new Exception("Ya existe un contrato vigente para el Cliente");
+        }
         ContractEntity entity = new ContractEntity();
         entity.setRequiredCheckList(contract.isRequiredCheckList());
         entity.setActive(contract.isActive());
