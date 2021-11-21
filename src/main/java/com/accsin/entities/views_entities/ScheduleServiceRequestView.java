@@ -20,7 +20,7 @@ public class ScheduleServiceRequestView {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "servce_request_id")
+    @Column(name = "service_request_id")
     private String serviceRequestId;
 
     @Column(name = "user_id")
@@ -50,7 +50,7 @@ public class ScheduleServiceRequestView {
     @Column(name = "name_service")
     private String nameService;
 
-    @Column(name = "is_completed")
-    private boolean isCompleted;
+    @Column(name = "completed")
+    private boolean completed;
 
 }

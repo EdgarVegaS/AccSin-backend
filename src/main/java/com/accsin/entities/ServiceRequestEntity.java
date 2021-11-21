@@ -25,10 +25,16 @@ public class ServiceRequestEntity {
     private long id;
 
     @Column(nullable = false)
-    private String servceRequestId;
+    private String serviceRequestId;
 
     @Column
-    private boolean isCompleted;
+    private boolean completed;
+    
+    @Column 
+    private boolean checkListCompleted;
+    
+    @Column
+    private String observations;
 
     @CreatedDate
     private Date createAt;

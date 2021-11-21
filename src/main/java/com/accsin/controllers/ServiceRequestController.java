@@ -63,13 +63,13 @@ public class ServiceRequestController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping
+    @PutMapping("/updateServiceRequest")
     public ResponseEntity<Object> updateServiceRequest(@RequestBody UpdateServiceRequest request) {
         OutMessage response = new OutMessage();
         try {
             serviceRequestService.updateServiceRequest(request);
             response.setMessageTipe(MessageTipe.OK);
-            response.setMessage("Actualizacion se solicitud Exitosa");
+            response.setMessage("Actualizacion de solicitud Exitosa");
             response.setDetail("Se ha actualizado la solicitud de manera exitosa");
         } catch (Exception e) {
             response.setMessageTipe(OutMessage.MessageTipe.ERROR);
