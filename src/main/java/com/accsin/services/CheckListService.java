@@ -49,5 +49,4 @@ public class CheckListService implements CheckListServiceInterface {
 
         return mapper.map(checkListEntity,CheckListDto.class);
     }
-    
 }

@@ -170,4 +170,22 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         }
         return listDto;
     }
+
+    @Override
+    public ScheduleNextMonthDto getServiceRequestByServiceRequestId(String serviceRequestId) {
+        
+        ScheduleServiceRequestView entity = nextMonthRepository.getByServiceRequestId(serviceRequestId);
+        return mapper.map(entity, ScheduleNextMonthDto.class);
+    }
+
+    @Override
+    public void createCheckListServiceRequestUpdate(String userId) {
+
+        ServiceRequestEntity serviceRequestEntity = new ServiceRequestEntity();
+        serviceRequestEntity.setServiceRequestId(UUID.randomUUID().toString());
+        serviceRequestEntity.setClient(userRepository.findByUserId(userId));
+        serviceRequestEntity.setService(serviceRepository.findByName("Modificación CheckList"));
+        serviceRequestEntity.setCreateAt(new Date());
+        serviceRequestRepository.save(serviceRequestEntity);
+    }
 }

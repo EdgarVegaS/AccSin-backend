@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface ServiceRepository extends CrudRepository<ServiceEntity,Long> {
     
     ServiceEntity findByServiceId(String serviceId);
+    ServiceEntity findByName(String name);
     //List<ServiceEntity> findByUserId(long userId);
 }

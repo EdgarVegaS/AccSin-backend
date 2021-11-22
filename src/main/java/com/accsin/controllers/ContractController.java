@@ -63,9 +63,6 @@ public class ContractController {
     	OutMessage response = new OutMessage();
     	try {
     		ContractCreateDto dto = mapper.map(request,ContractCreateDto.class);
-    		if(!request.isFreeChange()) {
-    			//Lógica para cargarle un cobro al cliente
-    		}
     		contractService.updateContract(dto,request.getContractId());
     		response.setMessageTipe(OutMessage.MessageTipe.OK);
 			response.setMessage("Contrato Actualizado Exitosamente");

@@ -149,4 +149,18 @@ public class ServiceRequestController {
         }
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/service-request-id")
+    public ResponseEntity<Object> getBetweenDateServicesByUserId(@RequestParam String id) {
+        OutMessage response = new OutMessage();
+        try {
+            ScheduleNextMonthDto dto = serviceRequestService.getServiceRequestByServiceRequestId(id);
+            return ResponseEntity.ok().body(dto);
+        } catch (Exception e) {
+            response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+            response.setMessage("Error al obtener servicio");
+            response.setDetail(e.getMessage());
+        }
+        return ResponseEntity.ok().body(response);
+    }
 }

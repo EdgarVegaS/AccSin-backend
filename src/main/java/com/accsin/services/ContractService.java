@@ -48,6 +48,9 @@ public class ContractService implements ContractServiceInterface {
     ServiceService serviceService;
 
     @Autowired
+    ServiceRequestService serviceRequestService;
+
+    @Autowired
     ModelMapper mapper;
 
     @Override
@@ -98,6 +101,9 @@ public class ContractService implements ContractServiceInterface {
         checkListEntity.setJsonList(contract.getCheckList().getJsonList());
         checkListReposirory.save(checkListEntity);
         contractRepository.save(entity);
+        if (!contract.isFreeChange()) {
+            serviceRequestService.createCheckListServiceRequestUpdate(entity.getUser().getUserId());
+        }
         return mapper.map(entity, ContractDto.class);
     }
 
