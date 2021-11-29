@@ -81,4 +81,8 @@ public final class DateTimeUtils {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
     }
+
+    public static String getMonthYear(String date){
+        return date.substring(0,7);
+    }  
 }
