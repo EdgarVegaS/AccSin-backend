@@ -11,6 +11,5 @@ public interface ScheduleServiceInterface {
     public ScheduleEntity createScheduleForServiceRequest(String date);
     public List<ScheduleDto> getScheduleNextMonth();
     public List<DateAvailableDto> getAvailableDays();
-    public void testView();
     public void deleteSchedule(long id);
 }

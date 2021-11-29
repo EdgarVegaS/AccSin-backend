@@ -6,6 +6,7 @@ import com.accsin.models.shared.dto.CheckListDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONArray;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 
@@ -26,4 +27,5 @@ public final class MethodsUtils {
         response.setCheckListId(dto.getCheckListId());
         return response;
     }
+
 }

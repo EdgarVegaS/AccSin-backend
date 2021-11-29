@@ -20,6 +20,9 @@ public class ImprovementHistoryEntity {
     private long id;
 
     @Column
+    private String improvementHistoryId;
+
+    @Column
     private String jsonImprovements;
 
     @Column

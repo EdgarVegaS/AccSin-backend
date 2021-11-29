@@ -16,12 +16,10 @@ import com.accsin.entities.ScheduleEntity;
 import com.accsin.entities.UserEntity;
 import com.accsin.entities.views_entities.AvailableDaysView;
 import com.accsin.entities.views_entities.ProfessionalScheduleView;
-import com.accsin.entities.views_entities.ScheduleMonthView;
 import com.accsin.models.shared.dto.DateAvailableDto;
 import com.accsin.models.shared.dto.ScheduleDto;
 import com.accsin.repositories.AvailableDaysRepository;
 import com.accsin.repositories.ProfessionalScheduleRepository;
-import com.accsin.repositories.ScheduleMonthViewRepository;
 import com.accsin.repositories.ScheduleRepository;
 import com.accsin.repositories.UserRepository;
 import com.accsin.services.interfaces.ScheduleServiceInterface;
@@ -35,16 +33,14 @@ public class ScheduleService implements ScheduleServiceInterface {
     private UserRepository userRepository;
     private ScheduleRepository scheduleRepository;
     private ModelMapper mapper;
-    private ScheduleMonthViewRepository monthViewRepository;
     private AvailableDaysRepository availableDaysRepository;
     private ProfessionalScheduleRepository professionalScheduleRepository;
 
     public ScheduleService(UserRepository userRepository, ScheduleRepository scheduleRepository, ModelMapper mapper,
-            ScheduleMonthViewRepository monthViewRepository, AvailableDaysRepository availableDaysRepository,ProfessionalScheduleRepository professionalScheduleRepository) {
+            AvailableDaysRepository availableDaysRepository,ProfessionalScheduleRepository professionalScheduleRepository) {
         this.userRepository = userRepository;
         this.scheduleRepository = scheduleRepository;
         this.mapper = mapper;
-        this.monthViewRepository = monthViewRepository;
         this.availableDaysRepository = availableDaysRepository;
         this.professionalScheduleRepository = professionalScheduleRepository;
     }
@@ -73,12 +69,6 @@ public class ScheduleService implements ScheduleServiceInterface {
             listDto.add(mapper.map(s, ScheduleDto.class));
         });
         return listDto;
-    }
-
-    @Override
-    public void testView() {
-        List<ScheduleMonthView> list = monthViewRepository.getAllRecord();
-        list.forEach(s -> System.out.println(s));
     }
 
     @Override

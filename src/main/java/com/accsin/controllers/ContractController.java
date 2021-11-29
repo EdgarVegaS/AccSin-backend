@@ -10,8 +10,10 @@ import com.accsin.models.responses.OutMessage.MessageTipe;
 import com.accsin.models.shared.dto.ContractCreateDto;
 import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.ContractTypeDto;
+import com.accsin.models.shared.dto.ImprovementHistoryDto;
 import com.accsin.models.shared.dto.PaginationDto;
 import com.accsin.services.interfaces.ContractServiceInterface;
+import com.accsin.services.interfaces.ImprovementHistoryServiceInterface;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ContractController {
     
     @Autowired
     ContractServiceInterface contractService;
+
+	@Autowired
+	ImprovementHistoryServiceInterface historyService;
 
     @Autowired
     ModelMapper mapper;
@@ -136,5 +141,35 @@ public class ContractController {
     	List<ContractTypeDto> listDto = contractService.getContractTypes();
     	return ResponseEntity.ok().body(listDto);
     }
- 
+
+	@GetMapping("/improvementHistoryDto/all")
+	public ResponseEntity<Object> getImprovementsHistory(){
+		OutMessage response = new OutMessage();
+		try {
+			List<ImprovementHistoryDto> listDto = historyService.getAll();
+			return ResponseEntity.ok().body(listDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Obteniendo el historial de mejoras");
+			response.setDetail(e.getMessage());
+		}
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/improvementHistoryDto/")
+	public ResponseEntity<Object> getImprovementsHistory(@RequestParam String userId){
+		OutMessage response = new OutMessage();
+		try {
+			List<ImprovementHistoryDto> listDto = historyService.getByUser(userId);
+			return ResponseEntity.ok().body(listDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error Obteniendo el historial de mejoras");
+			response.setDetail(e.getMessage());
+		}
+		return ResponseEntity.ok().body(response);
+	}
+
 }
