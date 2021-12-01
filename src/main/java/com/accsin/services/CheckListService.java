@@ -41,6 +41,21 @@ public class CheckListService implements CheckListServiceInterface {
         return mapper.map(checkListCreated, CheckListDto.class);
 
     }
+    
+    @Override
+    public CheckListDto updateCheckList(CreateCheckListDto checklist) {
+        
+        ContractEntity contract = contractRepository.findByContractId(checklist.getContractId());
+        CheckListEntity clEntity = checkListRepository.getCheckListbyContractId((int) contract.getId());
+        clEntity.setCheckListId(UUID.randomUUID().toString());
+        clEntity.setContract(contract);
+        clEntity.setJsonList(checklist.getJsonList());
+        clEntity.setJsonMejoras(checklist.getJsonMejoras());
+        clEntity.setCreateAt(new Date());
+        CheckListEntity checkListCreated = checkListRepository.save(clEntity);
+        return mapper.map(checkListCreated, CheckListDto.class);
+
+    }
 
     @Override
     public CheckListDto getCheckListByUser(String userId) {

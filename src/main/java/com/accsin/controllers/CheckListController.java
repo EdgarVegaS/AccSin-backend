@@ -2,13 +2,18 @@ package com.accsin.controllers;
 
 import static com.accsin.utils.MethodsUtils.setCheckListResponse;
 
+import java.util.List;
+
 import com.accsin.models.request.CheckListRequest;
+import com.accsin.models.request.MejorasListRequest;
 import com.accsin.models.responses.CheckListResponse;
 import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.OutMessage.MessageTipe;
 import com.accsin.models.shared.dto.CheckListDto;
+import com.accsin.models.shared.dto.ContractDto;
 import com.accsin.models.shared.dto.CreateCheckListDto;
 import com.accsin.services.interfaces.CheckListServiceInterface;
+import com.accsin.services.interfaces.ContractServiceInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.modelmapper.ModelMapper;
@@ -29,6 +34,9 @@ public class CheckListController {
 
     @Autowired
     CheckListServiceInterface checkListService;
+    
+    @Autowired
+    ContractServiceInterface contractService;
 
     @Autowired
     ModelMapper mapper;
@@ -50,6 +58,33 @@ public class CheckListController {
         
         return setCheckListResponse(dtoCreated, objMapper, logger, mapper);
     }
+    
+    @PostMapping("/updateCheckList")
+    public ResponseEntity<Object> updateCheckList(@RequestBody MejorasListRequest request){
+    	OutMessage response = new OutMessage();
+    	try {
+    		
+            String mejoras = request.getJsonMejoras().toString();
+            List<ContractDto> listDto = contractService.getContractByUserId(request.getUserId());
+            ContractDto contract = listDto.get(0);
+            CreateCheckListDto createDto = CreateCheckListDto.builder().contractId(contract.getContractId())
+                                                                       .jsonList(contract.getCheckList().getJsonList()).jsonMejoras(mejoras)
+                                                                       .build();
+            checkListService.updateCheckList(createDto);
+            response.setMessageTipe(OutMessage.MessageTipe.OK);
+            response.setMessage("Se ha actualizado el listado de mejoras con éxito");
+            return ResponseEntity.ok().body(response);
+		} catch (Exception e) {
+
+            response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("ERROR al actualizar listado mejoras de usuario");
+			response.setDetail(e.getMessage());
+			return ResponseEntity.ok().body(response);
+		}
+
+
+    }
+
 
 
     @GetMapping("/{id}")
@@ -66,9 +101,8 @@ public class CheckListController {
             response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("ERROR al obtener check list de usuario");
 			response.setDetail(e.getMessage());
+			return ResponseEntity.ok().body(response);
 
         }
-
-        return ResponseEntity.ok().body(response);
     }
 }
