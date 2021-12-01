@@ -60,18 +60,29 @@ public class CheckListController {
     }
     
     @PostMapping("/updateCheckList")
-    public CheckListResponse updateCheckList(@RequestBody MejorasListRequest request){
-    	System.out.println(request.getUserId());
-    	System.out.println(request.getJsonMejoras());
-        String mejoras = request.getJsonMejoras().toString();
-        List<ContractDto> listDto = contractService.getContractByUserId(request.getUserId());
-        ContractDto contract = listDto.get(0);
-        CreateCheckListDto createDto = CreateCheckListDto.builder().contractId(contract.getContractId())
-                                                                   .jsonList(contract.getCheckList().getJsonList()).jsonMejoras(mejoras)
-                                                                   .build();
-        CheckListDto dtoCreated = checkListService.createCheckList(createDto);
-        
-        return setCheckListResponse(dtoCreated, objMapper, logger, mapper);
+    public ResponseEntity<Object> updateCheckList(@RequestBody MejorasListRequest request){
+    	OutMessage response = new OutMessage();
+    	try {
+    		
+            String mejoras = request.getJsonMejoras().toString();
+            List<ContractDto> listDto = contractService.getContractByUserId(request.getUserId());
+            ContractDto contract = listDto.get(0);
+            CreateCheckListDto createDto = CreateCheckListDto.builder().contractId(contract.getContractId())
+                                                                       .jsonList(contract.getCheckList().getJsonList()).jsonMejoras(mejoras)
+                                                                       .build();
+            checkListService.updateCheckList(createDto);
+            response.setMessageTipe(OutMessage.MessageTipe.OK);
+            response.setMessage("Se ha actualizado el listado de mejoras con éxito");
+            return ResponseEntity.ok().body(response);
+		} catch (Exception e) {
+
+            response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("ERROR al actualizar listado mejoras de usuario");
+			response.setDetail(e.getMessage());
+			return ResponseEntity.ok().body(response);
+		}
+
+
     }
 
 
@@ -90,9 +101,8 @@ public class CheckListController {
             response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("ERROR al obtener check list de usuario");
 			response.setDetail(e.getMessage());
+			return ResponseEntity.ok().body(response);
 
         }
-
-        return ResponseEntity.ok().body(response);
     }
 }
