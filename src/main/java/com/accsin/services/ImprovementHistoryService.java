@@ -1,7 +1,9 @@
 package com.accsin.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.accsin.entities.ImprovementHistoryEntity;
 import com.accsin.entities.UserEntity;
@@ -45,6 +47,21 @@ public class ImprovementHistoryService implements ImprovementHistoryServiceInter
             listDto.add(mapper.map(improvementHistoryEntity, ImprovementHistoryDto.class));
         }
         return listDto;
+    }
+
+    @Override
+    public void createImprovementHistory(ImprovementHistoryDto request) {
+        
+        UserEntity user = userRepository.findByUserId(request.getUserId());
+        ImprovementHistoryEntity entity = new ImprovementHistoryEntity();
+        entity.setDate(request.getDate());
+        entity.setImprovementsNumber(request.getImprovementsNumber());
+        entity.setJsonImprovements(request.getJsonImprovements());
+        entity.setImprovementHistoryId(UUID.randomUUID().toString());
+        entity.setUserId(user.getId());
+
+        improvementHistoryRepository.save(entity);
+        
     }
     
 }

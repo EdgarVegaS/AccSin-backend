@@ -1,9 +1,11 @@
 package com.accsin.controllers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import com.accsin.models.request.CreateContractRequest;
+import com.accsin.models.request.ImprovementHistoryRequest;
 import com.accsin.models.request.UpdateContractRequest;
 import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.OutMessage.MessageTipe;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.expression.Ids;
 
 @RestController
 @RequestMapping("/api/contracts")
@@ -142,7 +145,7 @@ public class ContractController {
     	return ResponseEntity.ok().body(listDto);
     }
 
-	@GetMapping("/improvementHistoryDto/all")
+	@GetMapping("/improvement-history/all")
 	public ResponseEntity<Object> getImprovementsHistory(){
 		OutMessage response = new OutMessage();
 		try {
@@ -157,7 +160,7 @@ public class ContractController {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@GetMapping("/improvementHistoryDto/")
+	@GetMapping("/improvement-history")
 	public ResponseEntity<Object> getImprovementsHistory(@RequestParam String userId){
 		OutMessage response = new OutMessage();
 		try {
@@ -172,4 +175,27 @@ public class ContractController {
 		return ResponseEntity.ok().body(response);
 	}
 
+	@PostMapping("/improvement-history/create")
+	public ResponseEntity<Object> getCreateImprovementHistory(@RequestBody ImprovementHistoryRequest request){
+		OutMessage response = new OutMessage();
+		try {
+			ImprovementHistoryDto ihDto = new ImprovementHistoryDto();
+			ihDto.setDate(new Date());
+			ihDto.setJsonImprovements(request.getJsonMejoras().toString());
+			ihDto.setImprovementsNumber(request.getCountMejoras());
+			ihDto.setUserId(request.getUserId());
+			historyService.createImprovementHistory(ihDto);
+
+			response.setMessageTipe(OutMessage.MessageTipe.OK);
+			response.setMessage("historial de mejora Creado Exitosamente");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+			response.setMessage("Se ha producido un error creando historial de mejoras");
+			response.setDetail(e.getMessage());
+		}
+
+		return ResponseEntity.ok().body(response);
+	}
 }

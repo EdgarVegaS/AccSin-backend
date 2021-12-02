@@ -9,7 +9,7 @@ public class ImprovementHistoryDto {
     
     private String improvementHistoryId;
     private String jsonImprovements;
-    private long userId;
+    private String userId;
     private Date date;
     private int improvementsNumber;
 }

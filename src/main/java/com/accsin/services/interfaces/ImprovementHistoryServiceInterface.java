@@ -8,5 +8,6 @@ public interface ImprovementHistoryServiceInterface {
 
     List<ImprovementHistoryDto> getAll();
     List<ImprovementHistoryDto> getByUser(String userId);
+    void createImprovementHistory(ImprovementHistoryDto request);
     
 }
