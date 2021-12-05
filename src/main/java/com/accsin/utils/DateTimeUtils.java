@@ -22,6 +22,29 @@ public final class DateTimeUtils {
         }
     }
 
+    public static String getLastYearMonthString(){
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH,-1);
+        return df.format(calendar.getTime());
+    }
+
+    public static String getLastMonthString(){
+
+        DateFormat df = new SimpleDateFormat("MMMM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH,-1);
+        return df.format(calendar.getTime());
+    }
+
+    public static Date getExpirationDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 10);
+        return calendar.getTime();
+
+    }
+
     public static int getLastDayOfNextMonth(){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);

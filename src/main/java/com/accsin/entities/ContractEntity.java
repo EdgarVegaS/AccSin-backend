@@ -15,11 +15,17 @@ import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "contract")
 public class ContractEntity {
     
