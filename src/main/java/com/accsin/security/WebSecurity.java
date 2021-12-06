@@ -49,6 +49,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         .antMatchers("/api/reportability").permitAll()
         .antMatchers("/api/reportability/*").permitAll()
         .antMatchers("/api/reportability/**").permitAll()
+        .antMatchers("/api/improvement-history/**").permitAll()
         .antMatchers(HttpMethod.GET, "/api/menu/*").permitAll()
         .antMatchers(HttpMethod.GET, "/api/actionTypes/*").permitAll()
         .antMatchers(HttpMethod.POST, "/api/actionTypes/*").permitAll()

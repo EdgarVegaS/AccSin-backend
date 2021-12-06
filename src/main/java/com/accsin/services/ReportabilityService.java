@@ -45,7 +45,7 @@ public class ReportabilityService {
             BaseColor colorBase = WebColors.getRGBColor("#ccffdd");
 
             Document document = new Document();
-            PdfWriter.getInstance(document,new FileOutputStream("D:/documents/"+usrName+"-"+getMonthYear(startDate)+".pdf"));
+            PdfWriter.getInstance(document,new FileOutputStream("C:/test/"+usrName+"-"+getMonthYear(startDate)+".pdf"));
             document.open();
 
             
