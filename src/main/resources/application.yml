@@ -14,3 +14,5 @@ logging:
         org.springframework.cloud: 'DEBUG'
         com.atsistemas: 'DEBUG'
 
+reportability:
+    base-fodler: D:/documents/
