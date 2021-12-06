@@ -32,6 +32,15 @@ public class MonthlyPaymentEntity {
     @Column
     private Date expirationDate;
 
+    @Column
+    private Date paymentDate;
+
+    @Column
+    private boolean payed;
+
+    @Column
+    private String month;
+
     @ManyToOne
     @JoinColumn(name = "contract_id")
     private ContractEntity contract;

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MonthlyPaymentRepository extends CrudRepository<MonthlyPaymentEntity,Long> {
     
+    MonthlyPaymentEntity findByMonthlyPaymentId(String monthlyPaymentId);
 }
