@@ -52,6 +52,10 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         serviceRequestEntity.setClient(userRepository.findByUserId(request.getClientId()));
         serviceRequestEntity.setService(serviceRepository.findByServiceId(request.getServiceId()));
         serviceRequestEntity.setCreateAt(new Date());
+        if(request.getServiceId().equalsIgnoreCase("27c2c51c-d700-41c9-8c01-b1c0541727db")){
+        	serviceRequestEntity.setCompleted(true);
+        	serviceRequestEntity.setObservations("Cargo automático, Solicitado por el usuario ID: " + request.getClientId());
+        }
         ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
         serviceRequestEntity.setSchudule(scheduleEntity);
         serviceRequestRepository.save(serviceRequestEntity);
