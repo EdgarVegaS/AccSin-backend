@@ -31,7 +31,7 @@ public class ReportabilityController {
     public ResponseEntity<byte[]> testCreationPDF(@RequestParam String userId, @RequestParam String userName, @RequestParam String startDate, @RequestParam String finishDate){
         try {
             reportabilityService.createServicesPDF(userId, userName, startDate, finishDate);
-            byte[] contents = Files.readAllBytes(Paths.get("D:/documents/"+userName+"-"+getMonthYear(startDate) +".pdf"));
+            byte[] contents = Files.readAllBytes(Paths.get("C:/test/"+userName+"-"+getMonthYear(startDate) +".pdf"));
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             
