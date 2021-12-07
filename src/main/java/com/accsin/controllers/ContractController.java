@@ -161,7 +161,7 @@ public class ContractController {
 	}
 
 	@GetMapping("/improvement-history")
-	public ResponseEntity<Object> getImprovementsHistory(@RequestParam String userId){
+	public ResponseEntity<Object> getImprovementsHistoryAll(@RequestParam String userId){
 		OutMessage response = new OutMessage();
 		try {
 			List<ImprovementHistoryDto> listDto = historyService.getByUser(userId);
@@ -176,7 +176,7 @@ public class ContractController {
 	}
 
 	@PostMapping("/improvement-history/create")
-	public ResponseEntity<Object> getCreateImprovementHistory(@RequestBody ImprovementHistoryRequest request){
+	public ResponseEntity<Object> createImprovementHistory(@RequestBody ImprovementHistoryRequest request){
 		OutMessage response = new OutMessage();
 		try {
 			ImprovementHistoryDto ihDto = new ImprovementHistoryDto();
