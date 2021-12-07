@@ -38,9 +38,9 @@ public final class DateTimeUtils {
         return df.format(calendar.getTime());
     }
 
-    public static String getActualMonthNumber(){
+    public static String getActualYearMonthNumber(){
 
-        DateFormat df = new SimpleDateFormat("MM");
+        DateFormat df = new SimpleDateFormat("yyyy/MM");
         Calendar calendar = Calendar.getInstance();
         return df.format(calendar.getTime());
     }

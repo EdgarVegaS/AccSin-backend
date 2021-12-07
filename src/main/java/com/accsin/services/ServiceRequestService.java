@@ -1,7 +1,7 @@
 package com.accsin.services;
 
 import static com.accsin.utils.DateTimeUtils.getDateFormatFromDate;
-import static com.accsin.utils.DateTimeUtils.getActualMonthNumber;
+import static com.accsin.utils.DateTimeUtils.getActualYearMonthNumber;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +56,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         if(request.getServiceId().equalsIgnoreCase("27c2c51c-d700-41c9-8c01-b1c0541727db")){
         	serviceRequestEntity.setCompleted(true);
         	serviceRequestEntity.setObservations("Cargo automático, Solicitado por el usuario ID: " + request.getClientId());
-            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
+            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequestNoProfessional(request.getDateSelected());
             serviceRequestEntity.setSchudule(scheduleEntity);
         }else{
             ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
@@ -193,6 +193,8 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         serviceRequestEntity.setServiceRequestId(UUID.randomUUID().toString());
         serviceRequestEntity.setClient(userRepository.findByUserId(userId));
         serviceRequestEntity.setService(serviceRepository.findByName("Modificación CheckList"));
+        ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequestNoProfessional(getActualYearMonthNumber()+"/01 09:00:00");
+        serviceRequestEntity.setSchudule(scheduleEntity);
         serviceRequestEntity.setCreateAt(new Date());
         serviceRequestRepository.save(serviceRequestEntity);
     }
