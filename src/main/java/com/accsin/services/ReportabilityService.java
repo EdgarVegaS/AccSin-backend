@@ -2,9 +2,13 @@ package com.accsin.services;
 
 import static com.accsin.utils.DateTimeUtils.getMonthYear;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.accsin.entities.views_entities.ScheduleServiceRequestView;
@@ -21,10 +25,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportabilityService { 
+
+    @Value("${reportability.base-fodler}")
+    private String baseFolder;
 
     private ScheduleNextMonthRepository scheduleNextMonthRepository;
 
@@ -32,7 +40,9 @@ public class ReportabilityService {
         this.scheduleNextMonthRepository = scheduleNextMonthRepository;
     }
     
-    public void createServicesPDF(String userId,String usrName,String startDate,String endDate) throws DocumentException, MalformedURLException, IOException{
+    public boolean createServicesPDF(String userId,String usrName,String startDate,String endDate) throws DocumentException, MalformedURLException, IOException{
+        
+        createUserFolder(userId);
 
         List<ScheduleServiceRequestView> ScheduleUser = scheduleNextMonthRepository.getBetweenDateByUser(userId, startDate, endDate);
         if (!ScheduleUser.isEmpty()) {
@@ -45,7 +55,7 @@ public class ReportabilityService {
             BaseColor colorBase = WebColors.getRGBColor("#ccffdd");
 
             Document document = new Document();
-            PdfWriter.getInstance(document,new FileOutputStream("C:/test/"+usrName+"-"+getMonthYear(startDate)+".pdf"));
+            PdfWriter.getInstance(document,new FileOutputStream(baseFolder+userId+"/"+usrName+"-"+getMonthYear(startDate)+".pdf"));
             document.open();
 
             
@@ -125,6 +135,17 @@ public class ReportabilityService {
             
             document.close();
 
+            return true;
+
+        }
+        return false;
+    }
+
+    private void createUserFolder(String userId){
+        Path path = Paths.get(baseFolder+userId);
+        if(!Files.exists(path)){
+            File file = new File(baseFolder+userId);
+            file.mkdir();
         }
     }
 

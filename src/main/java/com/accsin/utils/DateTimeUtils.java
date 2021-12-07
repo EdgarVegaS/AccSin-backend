@@ -38,6 +38,14 @@ public final class DateTimeUtils {
         return df.format(calendar.getTime());
     }
 
+    public static String getActualMonthNumber(){
+
+        DateFormat df = new SimpleDateFormat("MM");
+        Calendar calendar = Calendar.getInstance();
+        return df.format(calendar.getTime());
+    }
+
+
     public static Date getExpirationDate(){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 10);
