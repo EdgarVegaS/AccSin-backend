@@ -58,6 +58,17 @@ public class ScheduleService implements ScheduleServiceInterface {
         entity.setProfessional(userRepository.findByUserId(profesionalId));
         scheduleRepository.save(entity);
         return entity;
+
+    }
+    @Override
+    public ScheduleEntity createScheduleForServiceRequestNoProfessional(String date) {
+        
+        ScheduleEntity entity = new ScheduleEntity();
+        entity.setScheduleId(UUID.randomUUID().toString());
+        entity.setDate(parseStringToDateTime(date+ " 09:00:00"));
+        //entity.setProfessional(userRepository.findByUserId(profesionalId));
+        scheduleRepository.save(entity);
+        return entity;
     }
 
     @Override
@@ -152,4 +163,5 @@ public class ScheduleService implements ScheduleServiceInterface {
         scheduleRepository.delete(entity);
         
     }
+
 }

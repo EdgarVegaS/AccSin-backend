@@ -1,6 +1,7 @@
 package com.accsin.services;
 
 import static com.accsin.utils.DateTimeUtils.getDateFormatFromDate;
+import static com.accsin.utils.DateTimeUtils.getActualMonthNumber;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,9 +56,12 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         if(request.getServiceId().equalsIgnoreCase("27c2c51c-d700-41c9-8c01-b1c0541727db")){
         	serviceRequestEntity.setCompleted(true);
         	serviceRequestEntity.setObservations("Cargo automático, Solicitado por el usuario ID: " + request.getClientId());
+            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
+            serviceRequestEntity.setSchudule(scheduleEntity);
+        }else{
+            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
+            serviceRequestEntity.setSchudule(scheduleEntity);
         }
-        ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
-        serviceRequestEntity.setSchudule(scheduleEntity);
         serviceRequestRepository.save(serviceRequestEntity);
     }
 
