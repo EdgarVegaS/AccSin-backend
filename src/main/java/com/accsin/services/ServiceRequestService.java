@@ -86,22 +86,12 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     public void updateServiceRequest(UpdateServiceRequest request) {
         
         ServiceRequestEntity entity = serviceRequestRepository.findByServiceRequestId(request.getServiceRequestId());
-
-        boolean sameDate = compareDatesFromRequest(request.getDateSelected(), entity.getSchudule().getDate());
-        if (!sameDate) {
-            ScheduleEntity scheduleOld = entity.getSchudule();
-            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
-            entity.setSchudule(scheduleEntity);
-            entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
-            serviceRequestRepository.save(entity);
-            scheduleService.deleteSchedule(scheduleOld.getId());
-        }else{
-            entity.setCompleted(request.isCompleted());
-            entity.setObservations(request.getObservations());
-            entity.setCheckListCompleted(request.isCheckListCompleted());
-            entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
-            serviceRequestRepository.save(entity);
-        }
+        entity.setCompleted(request.isCompleted());
+        entity.setObservations(request.getObservations());
+        entity.setCheckListCompleted(request.isCheckListCompleted());
+        entity.setService(serviceRepository.findByServiceId(request.getServiceId()));
+        serviceRequestRepository.save(entity);
+        
     }
 
     private boolean compareDatesFromRequest(String dateRequest, Date dateSchedule){
