@@ -60,7 +60,7 @@ public class UserController {
     	List<UserResponse> userList = new ArrayList<>();
         try {
         	 UserDto user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-             if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
+             if (!(user.getRole().getName().equals("ROLE_ADMINISTRATOR") || user.getRole().getName().equals("ROLE_ADMINISTRATIVE"))) {
                  throw new UnauthorizedExeption("Unauthorized");                
              }
              List<UserDto> listDto = userService.getAllUser();
@@ -138,7 +138,7 @@ public class UserController {
 		OutMessage response = new OutMessage();
 		UserDto user = userService
 				.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-		if (!user.getRole().getName().equals("ROLE_ADMINISTRATOR")) {
+		if (!(user.getRole().getName().equals("ROLE_ADMINISTRATOR") || user.getRole().getName().equals("ROLE_ADMINISTRATIVE"))) {
 			response.setMessageTipe(OutMessage.MessageTipe.ERROR);
 			response.setMessage("Se ha producido un error Creando al usuario");
 			response.setDetail("Usuario no autorizazdo");
