@@ -26,7 +26,6 @@ public final class DateTimeUtils {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM");
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH,-1);
         return df.format(calendar.getTime());
     }
 
@@ -34,7 +33,6 @@ public final class DateTimeUtils {
 
         DateFormat df = new SimpleDateFormat("MMMM");
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH,-1);
         return df.format(calendar.getTime());
     }
 

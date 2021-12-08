@@ -64,14 +64,22 @@ public class MonthlyPaymentService implements MonthlyPaymentServiceInterface {
         String date = getLastYearMonthString();
         List<MonthlyPaymentView> listEntities = monthlyPaymentViewRepository.getByDate(date);
         for (MonthlyPaymentView monthlyPaymentView : listEntities) {
-            MonthlyPaymentEntity entity = new MonthlyPaymentEntity();
-            entity.setMonthlyPaymentId(UUID.randomUUID().toString());
-            entity.setTotal(monthlyPaymentView.getFinalPrice());
-            entity.setContract(ContractEntity.builder().id(monthlyPaymentView.getContractId()).build());
-            entity.setExpirationDate(getExpirationDate());
-            entity.setMonth(getLastMonthString());
-            monthlyPaymentRepository.save(entity);
-            sentEmailMonthlyPayment(monthlyPaymentView.getUserName(), monthlyPaymentView.getEmail());
+            MonthlyPaymentEntity mEntity = monthlyPaymentRepository.getByContractAndMonth(monthlyPaymentView.getContractId(),getLastMonthString());
+            if (mEntity != null) {
+                mEntity.setTotal(monthlyPaymentView.getFinalPrice());
+                mEntity.setMonth(getLastMonthString());
+                monthlyPaymentRepository.save(mEntity);
+                sentEmailMonthlyPayment(monthlyPaymentView.getUserName(), monthlyPaymentView.getEmail());    
+            }else{
+                MonthlyPaymentEntity entity = new MonthlyPaymentEntity();
+                entity.setMonthlyPaymentId(UUID.randomUUID().toString());
+                entity.setTotal(monthlyPaymentView.getFinalPrice());
+                entity.setContract(ContractEntity.builder().id(monthlyPaymentView.getContractId()).build());
+                entity.setExpirationDate(getExpirationDate());
+                entity.setMonth(getLastMonthString());
+                monthlyPaymentRepository.save(entity);
+                sentEmailMonthlyPayment(monthlyPaymentView.getUserName(), monthlyPaymentView.getEmail());
+            }
         }
     }
 
