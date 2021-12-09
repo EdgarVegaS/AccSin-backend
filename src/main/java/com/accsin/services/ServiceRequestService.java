@@ -40,13 +40,14 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
 
     public ServiceRequestService(ServiceRequestRepository serviceRequestRepository, UserRepository userRepository,
             ServiceRepository serviceRepository, ScheduleServiceInterface scheduleService,ScheduleNextMonthRepository nextMonthRepository,
-            ModelMapper mapper) {
+            ModelMapper mapper, TrainingInformationRepository trainingInformationRepository) {
         this.serviceRequestRepository = serviceRequestRepository;
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
         this.scheduleService = scheduleService;
         this.nextMonthRepository = nextMonthRepository;
         this.mapper = mapper;
+        this.informationRepository = trainingInformationRepository;
     }
 
     @Override
@@ -64,8 +65,6 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
             serviceRequestEntity.setSchudule(scheduleEntity);
             serviceRequestRepository.save(serviceRequestEntity);
         }else if(request.getServiceId().equalsIgnoreCase("062e0e7a-dc5a-44d7-a61d-107c9684b70e")){
-            serviceRequestEntity.setCompleted(true);
-        	serviceRequestEntity.setObservations("Cargo automático, Solicitado por el usuario ID: " + request.getClientId());
             ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
             serviceRequestEntity.setSchudule(scheduleEntity);
             serviceRequestRepository.save(serviceRequestEntity);
@@ -73,7 +72,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
             trainingEntity.setTrainingInformationId(UUID.randomUUID().toString());
             trainingEntity.setAssistants(request.getAssistants());
             trainingEntity.setMaterials(request.getMaterials());
-            trainingEntity.setServiceRequestId(trainingEntity.getId());
+            trainingEntity.setServiceRequestId(serviceRequestEntity.getId());
             informationRepository.save(trainingEntity);
         }else{
             ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
