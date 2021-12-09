@@ -97,7 +97,6 @@ public class ContractService implements ContractServiceInterface {
         entity.setContractType(typeEntity);
         entity.setContractorCompany(contract.getContractorCompany());
         entity.setFinalPrice(contract.getFinalPrice());
-        entity.setUser(userEntity);
         checkListEntity.setJsonList(contract.getCheckList().getJsonList());
         checkListReposirory.save(checkListEntity);
         contractRepository.save(entity);
