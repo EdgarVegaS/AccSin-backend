@@ -7,6 +7,7 @@ import com.accsin.models.request.UpdateServiceRequest;
 import com.accsin.models.responses.OutMessage;
 import com.accsin.models.responses.OutMessage.MessageTipe;
 import com.accsin.models.shared.dto.ScheduleNextMonthDto;
+import com.accsin.models.shared.dto.TrainingInformationDto;
 import com.accsin.services.interfaces.ServiceRequestServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,4 +164,19 @@ public class ServiceRequestController {
         }
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/training-information")
+    public ResponseEntity<Object> getTrainingInfo(@RequestParam String serviceRequestId) {
+        OutMessage response = new OutMessage();
+        try {
+            TrainingInformationDto dto = serviceRequestService.getTrainignByServiceRequest(serviceRequestId);
+            return ResponseEntity.ok().body(dto);
+        } catch (Exception e) {
+            response.setMessageTipe(OutMessage.MessageTipe.ERROR);
+            response.setMessage("Error al obtener informacion de capacitacion");
+            response.setDetail(e.getMessage());
+        }
+        return ResponseEntity.ok().body(response);
+    }
+
 }

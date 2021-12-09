@@ -11,7 +11,9 @@ import java.util.UUID;
 
 import com.accsin.entities.ContractEntity;
 import com.accsin.entities.MonthlyPaymentEntity;
+import com.accsin.entities.RoleEntity;
 import com.accsin.entities.ServiceEntity;
+import com.accsin.entities.UserEntity;
 import com.accsin.entities.views_entities.MonthlyPaymentView;
 import com.accsin.entities.views_entities.UserMonthlyPaymentView;
 import com.accsin.models.shared.dto.MonthlyPaymentDto;
@@ -19,6 +21,7 @@ import com.accsin.models.shared.dto.UserMonthlyPymentDto;
 import com.accsin.repositories.MonthlyPaymentRepository;
 import com.accsin.repositories.MonthlyPaymentViewRepository;
 import com.accsin.repositories.UserMonthlyPaymentViewRepository;
+import com.accsin.repositories.UserRepository;
 import com.accsin.services.interfaces.MonthlyPaymentServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -45,6 +48,9 @@ public class MonthlyPaymentService implements MonthlyPaymentServiceInterface {
 
     @Autowired
     private JavaMailSender emailSender;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public MonthlyPaymentDto createMonthlyPayment(String date, ServiceEntity serviceEntity) {
@@ -108,6 +114,11 @@ public class MonthlyPaymentService implements MonthlyPaymentServiceInterface {
         MonthlyPaymentEntity entity = monthlyPaymentRepository.findByMonthlyPaymentId(monthlyPaymentId);
         entity.setPayed(true);
         entity.setPaymentDate(new Date());
+        UserEntity userEntity = entity.getContract().getUser();
+        RoleEntity role = new RoleEntity();
+        role.setId(3L);
+        userEntity.setRole(role);
+        userRepository.save(userEntity);
         monthlyPaymentRepository.save(entity);
     }
 

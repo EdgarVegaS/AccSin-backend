@@ -10,13 +10,16 @@ import java.util.UUID;
 
 import com.accsin.entities.ScheduleEntity;
 import com.accsin.entities.ServiceRequestEntity;
+import com.accsin.entities.TrainingInformationEntity;
 import com.accsin.entities.views_entities.ScheduleServiceRequestView;
 import com.accsin.models.request.CreateServiceRequestRequest;
 import com.accsin.models.request.UpdateServiceRequest;
 import com.accsin.models.shared.dto.ScheduleNextMonthDto;
+import com.accsin.models.shared.dto.TrainingInformationDto;
 import com.accsin.repositories.ScheduleNextMonthRepository;
 import com.accsin.repositories.ServiceRepository;
 import com.accsin.repositories.ServiceRequestRepository;
+import com.accsin.repositories.TrainingInformationRepository;
 import com.accsin.repositories.UserRepository;
 import com.accsin.services.interfaces.ScheduleServiceInterface;
 import com.accsin.services.interfaces.ServiceRequestServiceInterface;
@@ -32,6 +35,7 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
     private ServiceRepository serviceRepository;
     private ScheduleServiceInterface scheduleService;
     private ScheduleNextMonthRepository nextMonthRepository;
+    private TrainingInformationRepository informationRepository;
     private ModelMapper mapper;
 
     public ServiceRequestService(ServiceRequestRepository serviceRequestRepository, UserRepository userRepository,
@@ -58,11 +62,25 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         	serviceRequestEntity.setObservations("Cargo automático, Solicitado por el usuario ID: " + request.getClientId());
             ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequestNoProfessional(request.getDateSelected());
             serviceRequestEntity.setSchudule(scheduleEntity);
+            serviceRequestRepository.save(serviceRequestEntity);
+        }else if(request.getServiceId().equalsIgnoreCase("062e0e7a-dc5a-44d7-a61d-107c9684b70e")){
+            serviceRequestEntity.setCompleted(true);
+        	serviceRequestEntity.setObservations("Cargo automático, Solicitado por el usuario ID: " + request.getClientId());
+            ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
+            serviceRequestEntity.setSchudule(scheduleEntity);
+            serviceRequestRepository.save(serviceRequestEntity);
+            TrainingInformationEntity trainingEntity = new TrainingInformationEntity();
+            trainingEntity.setTrainingInformationId(UUID.randomUUID().toString());
+            trainingEntity.setAssistants(request.getAssistants());
+            trainingEntity.setMaterials(request.getMaterials());
+            trainingEntity.setServiceRequestId(trainingEntity.getId());
+            informationRepository.save(trainingEntity);
         }else{
             ScheduleEntity scheduleEntity = scheduleService.createScheduleForServiceRequest(request.getDateSelected());
             serviceRequestEntity.setSchudule(scheduleEntity);
+            serviceRequestRepository.save(serviceRequestEntity);
         }
-        serviceRequestRepository.save(serviceRequestEntity);
+        
     }
 
     @Override
@@ -188,4 +206,23 @@ public class ServiceRequestService implements ServiceRequestServiceInterface {
         serviceRequestEntity.setCreateAt(new Date());
         serviceRequestRepository.save(serviceRequestEntity);
     }
+
+    @Override
+    public TrainingInformationDto getTrainignByTrainingId(String trainigId) {
+        TrainingInformationEntity entity = informationRepository.findByTrainingInformationId(trainigId);
+        return mapper.map(entity, TrainingInformationDto.class);
+    }
+
+    @Override
+    public TrainingInformationDto getTrainignByServiceRequest(String id) {
+        ServiceRequestEntity sre = serviceRequestRepository.findByServiceRequestId(id);
+        long idsre = sre.getId();
+        
+        TrainingInformationEntity entity = informationRepository.findByServiceRequestId(idsre);
+
+        return mapper.map(entity, TrainingInformationDto.class);
+
+    }
+
+    
 }

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserServiceInterface extends UserDetailsService {
 
     public UserDto createUser(UserDto user);
+    public void changeRoleUser();
     public boolean updatePasswordUser(String email,String password);
     public UserDto getUser(String email);
     public UserDto getUserByUserId(String id);

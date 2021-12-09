@@ -59,6 +59,7 @@ public class UserController {
     	OutMessage response = new OutMessage();
     	List<UserResponse> userList = new ArrayList<>();
         try {
+			userService.changeRoleUser();
         	 UserDto user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
              if (!(user.getRole().getName().equals("ROLE_ADMINISTRATOR") || user.getRole().getName().equals("ROLE_ADMINISTRATIVE"))) {
                  throw new UnauthorizedExeption("Unauthorized");                

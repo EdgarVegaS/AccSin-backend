@@ -10,5 +10,7 @@ public class CreateServiceRequestRequest {
     private String clientId;
     private String dateSelected;
     private String serviceId;
+    private String materials;
+    private String assistants;
     
 }
