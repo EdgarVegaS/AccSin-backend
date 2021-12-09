@@ -1,6 +1,7 @@
 package com.accsin.services;
 
 import static com.accsin.utils.DateTimeUtils.parseStringToDate;
+import static com.accsin.utils.DateTimeUtils.getLastMonthString;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,12 +9,15 @@ import java.util.List;
 import java.util.UUID;
 
 import com.accsin.entities.BusinessUserEntity;
+import com.accsin.entities.MonthlyPaymentEntity;
+import com.accsin.entities.RoleEntity;
 import com.accsin.entities.UserEntity;
 import com.accsin.entities.recoveryPasswordEntity;
 import com.accsin.exeptions.ExistEmailExeption;
 import com.accsin.models.shared.dto.BusinessUserDto;
 import com.accsin.models.shared.dto.UserDto;
 import com.accsin.repositories.BusinessUserRepository;
+import com.accsin.repositories.MonthlyPaymentRepository;
 import com.accsin.repositories.PositionRepository;
 import com.accsin.repositories.RoleRepository;
 import com.accsin.repositories.UserRepository;
@@ -58,6 +62,9 @@ public class UserService implements UserServiceInterface {
     
     @Autowired
 	private JavaMailSender emailSender;
+
+	@Autowired
+	private MonthlyPaymentRepository monthlyPaymentRepository;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -239,6 +246,21 @@ public class UserService implements UserServiceInterface {
 			return false;
 		}
 		
+	}
+
+	@Override
+	public void changeRoleUser(){
+		String mes = getLastMonthString();
+		Iterable<MonthlyPaymentEntity> listEntities = monthlyPaymentRepository.findAll();
+		for (MonthlyPaymentEntity monthlyPaymentEntity : listEntities) {
+			if (monthlyPaymentEntity.getMonth().equals(mes) && !monthlyPaymentEntity.isPayed()) {
+				UserEntity userEntity = monthlyPaymentEntity.getContract().getUser();
+				RoleEntity role = new RoleEntity();
+				role.setId(5L);
+				userEntity.setRole(role);
+				userRepository.save(userEntity);
+			}
+		}
 	}
 
 	private boolean searchPasswordRequest(String email) {

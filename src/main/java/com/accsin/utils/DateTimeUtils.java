@@ -36,6 +36,14 @@ public final class DateTimeUtils {
         return df.format(calendar.getTime());
     }
 
+    public static String getLastMonthString1(){
+
+        DateFormat df = new SimpleDateFormat("MMMM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        return df.format(calendar.getTime());
+    }
+
     public static String getActualYearMonthNumber(){
 
         DateFormat df = new SimpleDateFormat("yyyy/MM");
