@@ -36,7 +36,7 @@ public class ServiceRequestController {
             serviceRequestService.createServiceRequest(request);
             response.setMessageTipe(OutMessage.MessageTipe.OK);
             response.setMessage("Solicitud de servicio Creada");
-            response.setDetail("Se ah creado la solicitud de forma exitosa");
+            response.setDetail("Se ha creado la solicitud de forma exitosa");
         } catch (Exception e) {
             response.setMessageTipe(OutMessage.MessageTipe.ERROR);
             response.setMessage("ERROR al crear solicitud de servicio");

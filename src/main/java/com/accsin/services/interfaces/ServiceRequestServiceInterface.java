@@ -10,7 +10,7 @@ import com.accsin.models.shared.dto.TrainingInformationDto;
 
 public interface ServiceRequestServiceInterface {
     
-    public void createServiceRequest(CreateServiceRequestRequest request);
+    public void createServiceRequest(CreateServiceRequestRequest request) throws Exception;
     public void createCheckListServiceRequestUpdate(String userId);
     public void updateServiceRequest(UpdateServiceRequest request);
     public List<ScheduleNextMonthDto> getNextMonthServices(String date);
